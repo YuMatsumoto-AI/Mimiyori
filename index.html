@@ -2,265 +2,588 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="description" content="AIカウンセリングサービス『みみより』で家族や仕事、育児の悩みを解決しましょう。あなたの心に寄り添うサポートを提供します。">
-    <title>みみより | AIカウンセリングで悩みを解決 - 家族・仕事・育児の相談に</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>みみより | やさしく寄り添うカウンセリングAI</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            color-scheme: light;
+            --bg-gradient: linear-gradient(135deg, #EAF8FF, #FDEFF0);
+            --panel-bg: rgba(255, 255, 255, 0.92);
+            --accent: #FF91A4;
+            --accent-dark: #DB6C80;
+            --assistant-bg: #FFF7E3;
+            --assistant-text: #555;
+            --user-bg: #FFE4E9;
+            --user-text: #B22222;
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Noto Sans JP', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #EAF8FF, #FDEFF0);
+            min-height: 100vh;
+            background: var(--bg-gradient);
             color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            box-sizing: border-box;
         }
+
         header {
-            background: #FFD1DC;
-            color: #333;
-            padding: 1em 0;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
+            position: sticky;
             top: 0;
-            z-index: 1000;
+            width: 100%;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
+
         header h1 {
             margin: 0;
-            font-size: 1.5em;
+            font-size: clamp(1.4rem, 1.8vw + 1rem, 2rem);
             font-weight: 700;
+            color: #333;
         }
+
         header p {
-            margin: 0;
-            font-size: 0.8em;
-            opacity: 0.8;
+            margin: 0.3rem 0 0;
+            font-size: 0.9rem;
+            color: #666;
         }
+
         main {
-            padding: 4em 1em 2em;
-            margin-top: 80px;
-            width: 100%;
-            max-width: 480px;
+            flex: 1;
+            width: min(960px, 100%);
+            padding: 1.5rem;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .layout {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 900px) {
+            main {
+                grid-template-columns: 2fr 1fr;
+            }
+
+            .layout {
+                grid-template-rows: auto 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border-radius: 18px;
+            box-shadow: 0 20px 45px rgba(87, 103, 131, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            overflow: hidden;
+        }
+
+        .chat-panel {
             display: flex;
             flex-direction: column;
-            gap: 1em;
-            height: calc(100vh - 80px);
-            overflow: hidden;
-            box-sizing: border-box;
+            min-height: 480px;
         }
+
+        .chat-header {
+            padding: 1.2rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .chat-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .chat-header p {
+            margin: 0.35rem 0 0;
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
         .chat-box {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 1em;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            flex-grow: 1;
+            flex: 1;
+            padding: 1.2rem 1.5rem;
             overflow-y: auto;
-            resize: vertical;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
-        .chat-box .message {
-            margin: 0.5em 0;
-            padding: 0.6em;
-            border-radius: 10px;
-            line-height: 1.5;
-            max-width: 75%;
-            font-size: 0.9em;
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
             opacity: 0;
-            animation: fadeIn 0.5s forwards;
+            animation: fadeIn 0.45s forwards ease-out;
         }
-        .chat-box .message.user {
-            margin-left: auto;
-            background-color: #FFE4E1;
-            color: #B22222;
+
+        .message::before {
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            width: 2.3rem;
+            height: 2.3rem;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        .chat-box .message.assistant {
-            margin-right: auto;
-            background-color: #FFF7E3;
+
+        .message.assistant {
+            align-self: flex-start;
+        }
+
+        .message.assistant::before {
+            content: '🎧';
+        }
+
+        .message.assistant .bubble {
+            background: var(--assistant-bg);
+            color: var(--assistant-text);
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.user::before {
+            content: '🪴';
+        }
+
+        .message.user .bubble {
+            background: var(--user-bg);
+            color: var(--user-text);
+        }
+
+        .bubble {
+            padding: 0.9rem 1rem;
+            border-radius: 16px;
+            box-shadow: 0 12px 25px rgba(178, 34, 34, 0.09);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            max-width: min(68vw, 420px);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .typing-indicator {
+            font-size: 0.85rem;
+            color: #888;
+            padding: 0 1.5rem 1.2rem;
+            text-align: center;
+            animation: blink 1.4s linear infinite;
+        }
+
+        .chat-input-area {
+            padding: 1.1rem 1.5rem 1.4rem;
+            border-top: 1px solid var(--border-color);
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .chat-input-area textarea {
+            width: 100%;
+            min-height: 80px;
+            resize: vertical;
+            padding: 0.8rem 1rem;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-family: inherit;
+            transition: border 0.2s ease;
+        }
+
+        .chat-input-area textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 145, 164, 0.15);
+        }
+
+        .chat-input-area .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .helper-text {
+            font-size: 0.78rem;
+            color: #888;
+        }
+
+        button.primary {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 0.65rem 1.6rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        button.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 25px rgba(255, 145, 164, 0.28);
+            background: var(--accent-dark);
+        }
+
+        button.primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.05);
+            color: #666;
+        }
+
+        .status-badge.online {
+            background: rgba(123, 200, 164, 0.18);
+            color: #2C6E49;
+        }
+
+        .status-dot {
+            width: 0.55rem;
+            height: 0.55rem;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .support-panel {
+            padding: 1.5rem;
+            display: grid;
+            gap: 1rem;
+            align-content: start;
+        }
+
+        .support-panel h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .support-panel p,
+        .support-panel li {
+            font-size: 0.9rem;
+            line-height: 1.6;
             color: #555;
         }
-        .typing-indicator {
-            margin: 0.5em auto;
-            font-size: 0.8em;
-            color: #888;
-            text-align: center;
-            animation: blink 1.5s infinite;
+
+        .support-panel ul {
+            margin: 0.5rem 0 0;
+            padding-left: 1.2rem;
         }
-        .input-area {
+
+        .settings {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .settings label {
+            font-size: 0.85rem;
+            color: #444;
             display: flex;
-            gap: 0.5em;
-            padding: 0.5em 1em;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-            box-sizing: border-box;
+            flex-direction: column;
+            gap: 0.4rem;
         }
-        .input-area input {
-            flex: 1;
-            padding: 0.5em;
-            font-size: 0.9em;
-            border: 1px solid #ccc;
+
+        .settings input,
+        .settings select {
+            padding: 0.65rem 0.75rem;
             border-radius: 10px;
-            outline: none;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            font-size: 0.9rem;
+            font-family: inherit;
         }
-        .input-area button {
-            padding: 0.5em 1em;
-            font-size: 0.9em;
-            color: white;
-            background-color: #FF91A4;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+
+        .settings small {
+            color: #888;
+            font-size: 0.75rem;
+            line-height: 1.5;
         }
-        .input-area button:hover {
-            background-color: #E37788;
+
+        footer {
+            padding: 2rem 1.5rem 3rem;
+            text-align: center;
+            color: #888;
+            font-size: 0.78rem;
         }
-        .input-area button[title] {
-            position: relative;
+
+        footer a {
+            color: inherit;
+            text-decoration: underline;
         }
-        .input-area button[title]:hover::after {
-            content: attr(title);
-            position: absolute;
-            bottom: 110%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
-            color: #fff;
-            padding: 0.3em 0.5em;
-            border-radius: 5px;
-            white-space: nowrap;
-            font-size: 0.7em;
-        }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
         }
+
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%, 100% { opacity: 0.25; }
+            50% { opacity: 0.75; }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>みみより</h1>
-        <p>AIカウンセリングで悩みを解決 - 家族・仕事・育児の相談に</p>
+        <p>AIと対話しながら、気持ちを整理して次の一歩を見つける場所です。</p>
     </header>
+
     <main>
-        <div class="chat-box" id="chat-box">
-            <div class="message assistant">今日もお疲れさまでした。少しでも気持ちが軽くなるお手伝いができればと思っています。例えば、「最近ストレスが溜まっている」といったことでもお聞かせください。</div>
-        </div>
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="例えば：家族関係の悩み、仕事のストレス">
-            <button onclick="sendMessage()">話す</button>
-            <button title="音声入力" onclick="startSpeechRecognition()">🎤</button>
-        </div>
+        <section class="layout">
+            <article class="panel chat-panel" aria-label="カウンセリングチャット">
+                <div class="chat-header">
+                    <div class="status-badge online" id="connection-status">
+                        <span class="status-dot"></span>
+                        やりとりの準備ができています
+                    </div>
+                    <h2>心の声をお聞かせください</h2>
+                    <p>感情や状況を短くまとめていただくだけで大丈夫です。丁寧に、やさしくフィードバックします。</p>
+                </div>
+
+                <div class="chat-box" id="chat-box" role="log" aria-live="polite"></div>
+
+                <div class="chat-input-area">
+                    <textarea id="user-input" placeholder="例：最近、仕事のことで気持ちがざわついています..." aria-label="相談内容を入力" spellcheck="false"></textarea>
+                    <div class="actions">
+                        <span class="helper-text">Enterで送信、Shift + Enterで改行できます。</span>
+                        <button class="primary" id="send-button">話してみる</button>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <aside class="panel support-panel" aria-label="サポート情報">
+            <h3>ご利用の前に</h3>
+            <p>みみよりは、日々の悩みやモヤモヤを言語化し、気づきを得るためのカウンセリング支援AIです。医療的な診断・治療や緊急対応は行えません。</p>
+            <ul>
+                <li>深刻な症状を感じるときは、お近くの専門機関や自治体窓口へご相談ください。</li>
+                <li>命の危険があると感じる場合は、ただちに119または地域の緊急窓口へ連絡してください。</li>
+            </ul>
+            <div class="settings" aria-label="接続設定">
+                <label>
+                    OpenAI APIキー
+                    <input id="api-key" type="password" placeholder="sk-..." autocomplete="off">
+                    <small>キーはブラウザ内にのみ保存されます。安全な場所での利用をお願いします。</small>
+                </label>
+                <label>
+                    モデル
+                    <select id="model-select">
+                        <option value="gpt-4o-mini">gpt-4o-mini（推奨）</option>
+                        <option value="gpt-4o">gpt-4o</option>
+                        <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                    </select>
+                </label>
+            </div>
+        </aside>
     </main>
+
+    <footer>
+        このサービスは傾聴とセルフケアをサポートする目的で提供されています。医療上の判断が必要な場合は必ず医師・専門家にご相談ください。
+    </footer>
+
     <script>
         const chatBox = document.getElementById('chat-box');
-        let chatHistory = [];
-        let isListening = false;
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const apiKeyField = document.getElementById('api-key');
+        const modelSelect = document.getElementById('model-select');
+        const connectionBadge = document.getElementById('connection-status');
+
+        const storageKey = 'mimiyori-settings';
+        let conversation = [{
+            role: 'system',
+            content: 'あなたは優しく寄り添いながら、相談者の気持ちを整理するのを手伝うカウンセラーAIです。安心感のある言葉遣いで、状況の整理と具体的な次の一歩を提示してください。医療行為は行わず、緊急時は専門機関への相談を促してください。'
+        }];
+
+        const initialMessage = '今日もお疲れさまです。ここでは、心の中で感じていることをそのまま言葉にして大丈夫です。どのような場面で気持ちが揺れたのか、まずは簡単に教えていただけますか？';
+
+        function saveSettings() {
+            const payload = {
+                apiKey: apiKeyField.value.trim(),
+                model: modelSelect.value
+            };
+            localStorage.setItem(storageKey, JSON.stringify(payload));
+        }
+
+        function loadSettings() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(storageKey) ?? '{}');
+                if (saved.apiKey) apiKeyField.value = saved.apiKey;
+                if (saved.model) modelSelect.value = saved.model;
+            } catch (_) {
+                // 破損したデータは無視
+            }
+        }
+
+        function setBadgeStatus(text, state = 'online') {
+            connectionBadge.textContent = '';
+            const dot = document.createElement('span');
+            dot.className = 'status-dot';
+            connectionBadge.className = `status-badge ${state}`;
+            connectionBadge.append(dot, text);
+        }
+
+        function appendMessage(role, content) {
+            const message = document.createElement('div');
+            message.className = `message ${role}`;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.textContent = content;
+
+            message.appendChild(bubble);
+            chatBox.appendChild(message);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function appendTypingIndicator() {
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.id = 'typing-indicator';
+            typing.textContent = 'みみよりが考えています...';
+            chatBox.appendChild(typing);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
 
         async function sendMessage() {
-            const input = document.getElementById('user-input');
+            const input = userInput.value.trim();
+            if (!input) return;
 
-            if (!input.value.trim()) return;
+            const apiKey = apiKeyField.value.trim();
+            if (!apiKey) {
+                appendMessage('assistant', 'OpenAI APIキーが設定されていないため接続できません。右側の設定欄にキーを入力してから再度お試しください。');
+                userInput.value = '';
+                return;
+            }
 
-            // ユーザーのメッセージを追加
-            const userMessage = document.createElement('div');
-            userMessage.className = 'message user';
-            userMessage.textContent = input.value;
-            chatBox.appendChild(userMessage);
-            chatBox.scrollTop = chatBox.scrollHeight;
+            saveSettings();
 
-            // 入力フィールドをリセット
-            const userInput = input.value;
-            input.value = '';
+            appendMessage('user', input);
+            userInput.value = '';
 
-            // チャット履歴に追加
-            chatHistory.push({ role: 'user', content: userInput });
+            conversation.push({ role: 'user', content: input });
+            appendTypingIndicator();
+            disableControls(true);
+            setBadgeStatus('みみよりが応答を準備しています', 'online');
 
-            // タイピングインジケータを表示
-            const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'typing-indicator';
-            typingIndicator.textContent = 'みみよりが入力中...';
-            chatBox.appendChild(typingIndicator);
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // OpenAI APIを呼び出し
             try {
                 const response = await fetch('https://api.openai.com/v1/chat/completions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer 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'
+                        'Authorization': `Bearer ${apiKey}`
                     },
                     body: JSON.stringify({
-                        model: 'gpt-3.5-turbo',
-                        messages: [
-                            { role: 'system', content: 'あなたは優しいカウンセラーAIです。どんな悩みにも共感しながら、具体的な例を挙げて現実的なアドバイスを提供します。' },
-                            ...chatHistory
-                        ]
+                        model: modelSelect.value,
+                        messages: conversation,
+                        temperature: 0.8,
+                        max_tokens: 800
                     })
                 });
 
+                if (!response.ok) {
+                    throw new Error(`APIリクエストに失敗しました（${response.status}）`);
+                }
+
                 const data = await response.json();
-                const aiMessageContent = data.choices[0].message.content;
+                const aiMessage = data.choices?.[0]?.message?.content?.trim();
 
-                // AIの応答を追加
-                const aiMessage = document.createElement('div');
-                aiMessage.className = 'message assistant';
-                aiMessage.textContent = aiMessageContent;
-                chatBox.appendChild(aiMessage);
-                chatBox.scrollTop = chatBox.scrollHeight;
+                if (!aiMessage) {
+                    throw new Error('応答を読み取れませんでした');
+                }
 
-                // チャット履歴に追加
-                chatHistory.push({ role: 'assistant', content: aiMessageContent });
-
-                // 音声で読み上げ（カウンセラーらしい口調に調整）
-                const utterance = new SpeechSynthesisUtterance(aiMessageContent);
-                const voices = window.speechSynthesis.getVoices();
-                utterance.voice = voices.find(voice => voice.lang === 'ja-JP' && voice.name.includes('女性')) || null;
-                utterance.pitch = 1.2; // トーンを少し高めに設定
-                utterance.rate = 0.9; // 少しゆっくり話す
-                window.speechSynthesis.speak(utterance);
-
+                appendMessage('assistant', aiMessage);
+                conversation.push({ role: 'assistant', content: aiMessage });
+                setBadgeStatus('やりとりの準備ができています', 'online');
+                speak(aiMessage);
             } catch (error) {
-                alert('エラーが発生しました。もう一度試してください。');
+                console.error(error);
+                setBadgeStatus('エラーが発生しました。設定をご確認ください。', '');
+                appendMessage('assistant', '接続中にエラーが発生しました。APIキー・利用回数・ネットワーク環境をご確認のうえ、少し時間をおいて再度お試しください。');
             } finally {
-                // タイピングインジケータを削除
-                typingIndicator.remove();
+                removeTypingIndicator();
+                disableControls(false);
             }
         }
 
-        function startSpeechRecognition() {
-            if (isListening) return;
-            isListening = true;
-
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = 'ja-JP';
-            recognition.interimResults = false;
-
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                document.getElementById('user-input').value = transcript;
-                sendMessage();
-            };
-
-            recognition.onerror = (event) => {
-                alert('音声認識でエラーが発生しました: ' + event.error);
-            };
-
-            recognition.onend = () => {
-                isListening = false;
-            };
-
-            recognition.start();
+        function disableControls(disabled) {
+            userInput.disabled = disabled;
+            sendButton.disabled = disabled;
+            modelSelect.disabled = disabled;
+            apiKeyField.disabled = disabled;
         }
+
+        function speak(text) {
+            if (!('speechSynthesis' in window)) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ja-JP';
+            utterance.pitch = 1.15;
+            utterance.rate = 0.95;
+            const voices = speechSynthesis.getVoices();
+            const preferredVoice = voices.find(voice => voice.lang === 'ja-JP' && voice.name.includes('Female'))
+                || voices.find(voice => voice.lang === 'ja-JP');
+            if (preferredVoice) utterance.voice = preferredVoice;
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utterance);
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+
+        userInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        apiKeyField.addEventListener('change', saveSettings);
+        modelSelect.addEventListener('change', saveSettings);
+
+        window.addEventListener('load', () => {
+            loadSettings();
+            appendMessage('assistant', initialMessage);
+            speak(initialMessage);
+        });
     </script>
 </body>
 </html>
