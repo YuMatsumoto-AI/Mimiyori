@@ -221,6 +221,7 @@
 
     <script type="module">
         const TARGET_URL = 'https://www.stat-search.boj.or.jp/ssi/mtshtml/fm08_m_1.html';
+        const PROXIED_TARGET_URL = 'https://cors.isomorphic-git.org/https://www.stat-search.boj.or.jp/ssi/mtshtml/fm08_m_1.html';
         const TARGET_KEYWORDS = ['東京市場', 'ドル・円', 'スポット', '中心相場', '月中平均'];
 
         function normalizeCellText(raw) {
@@ -433,18 +434,46 @@
         }
 
         async function fetchTokyoFxHtml() {
-            const response = await fetch(TARGET_URL, {
+            const fetchOptions = {
                 headers: {
                     'Accept': 'text/html,application/xhtml+xml',
                 },
                 mode: 'cors',
-            });
+            };
 
-            if (!response.ok) {
-                throw new Error(`データの取得に失敗しました（${response.status}）`);
+            const sources = [
+                { url: TARGET_URL, label: '日本銀行サイト' },
+                { url: PROXIED_TARGET_URL, label: 'CORSプロキシ' },
+            ];
+            const errors = [];
+
+            for (const source of sources) {
+                try {
+                    const response = await fetch(source.url, fetchOptions);
+                    if (!response.ok) {
+                        throw new Error(`${source.label}からの応答が不正です（${response.status}）`);
+                    }
+
+                    const contentType = response.headers.get('content-type') ?? '';
+                    if (contentType && !/text\/(html|xml)/i.test(contentType)) {
+                        throw new Error(`${source.label}からHTML形式のデータを取得できませんでした。`);
+                    }
+
+                    return await response.text();
+                } catch (error) {
+                    console.warn(`${source.label}の取得に失敗しました。別の手段を試します。`, error);
+                    errors.push(error instanceof Error ? error : new Error(String(error)));
+                }
             }
 
-            return response.text();
+            const nonTypeError = errors.find((error) => !(error instanceof TypeError));
+            if (nonTypeError) {
+                throw nonTypeError;
+            }
+            if (errors.length) {
+                throw errors[0];
+            }
+            throw new Error('データの取得に失敗しました。');
         }
 
         function computeAverage(records, months = 3) {
