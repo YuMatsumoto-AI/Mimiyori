@@ -221,6 +221,7 @@
 
     <script type="module">
         const TARGET_URL = 'https://www.stat-search.boj.or.jp/ssi/mtshtml/fm08_m_1.html';
+        const PROXIED_TARGET_URL = 'https://r.jina.ai/http://www.stat-search.boj.or.jp/ssi/mtshtml/fm08_m_1.html';
         const TARGET_KEYWORDS = ['東京市場', 'ドル・円', 'スポット', '中心相場', '月中平均'];
 
         function normalizeCellText(raw) {
@@ -433,18 +434,30 @@
         }
 
         async function fetchTokyoFxHtml() {
-            const response = await fetch(TARGET_URL, {
+            const fetchOptions = {
                 headers: {
                     'Accept': 'text/html,application/xhtml+xml',
                 },
                 mode: 'cors',
-            });
+            };
 
-            if (!response.ok) {
-                throw new Error(`データの取得に失敗しました（${response.status}）`);
+            try {
+                const response = await fetch(TARGET_URL, fetchOptions);
+                if (!response.ok) {
+                    throw new Error(`データの取得に失敗しました（${response.status}）`);
+                }
+                return await response.text();
+            } catch (originalError) {
+                try {
+                    const response = await fetch(PROXIED_TARGET_URL, fetchOptions);
+                    if (!response.ok) {
+                        throw new Error(`データの取得に失敗しました（${response.status}）`);
+                    }
+                    return await response.text();
+                } catch (proxyError) {
+                    throw originalError;
+                }
             }
-
-            return response.text();
         }
 
         function computeAverage(records, months = 3) {
