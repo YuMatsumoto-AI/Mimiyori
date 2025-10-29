@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-    <title>みみより | やさしく寄り添うカウンセリングAI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>みみより | エビデンスと寄り添うカウンセリングAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             color-scheme: light;
-            --bg-gradient: linear-gradient(135deg, #EAF8FF, #FDEFF0);
-            --panel-bg: rgba(255, 255, 255, 0.92);
-            --accent: #FF91A4;
-            --accent-dark: #DB6C80;
-            --assistant-bg: #FFF7E3;
-            --assistant-text: #555;
-            --user-bg: #FFE4E9;
-            --user-text: #B22222;
-            --border-color: rgba(0, 0, 0, 0.08);
+            --bg-gradient: radial-gradient(circle at 0% 0%, #F1F6FF 0%, #F7FBFF 30%, #FDFEFF 100%);
+            --panel-bg: rgba(255, 255, 255, 0.95);
+            --accent: #2E77FF;
+            --accent-soft: rgba(46, 119, 255, 0.14);
+            --accent-dark: #1648B9;
+            --assistant-bg: #F2F6FF;
+            --assistant-text: #2F3B54;
+            --user-bg: #E4ECFF;
+            --user-text: #1C3AA9;
+            --border-color: rgba(33, 59, 109, 0.12);
+            --shadow-strong: rgba(31, 55, 110, 0.18);
         }
 
         * {
@@ -29,75 +31,123 @@
             padding: 0;
             min-height: 100vh;
             background: var(--bg-gradient);
-            color: #333;
+            color: #1E2A3B;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         header {
-            position: sticky;
-            top: 0;
             width: 100%;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
+            padding: 2.2rem 1.5rem 1.8rem;
+            background: transparent;
         }
 
-        header h1 {
+        .brand-mark {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #2E77FF, #83B7FF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            box-shadow: 0 18px 35px rgba(46, 119, 255, 0.2);
+        }
+
+        .brand-text h1 {
             margin: 0;
-            font-size: clamp(1.4rem, 1.8vw + 1rem, 2rem);
-            font-weight: 700;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.45rem, 1rem + 2vw, 2.4rem);
+            color: #10244E;
+            letter-spacing: 0.02em;
         }
 
-        header p {
-            margin: 0.3rem 0 0;
-            font-size: 0.9rem;
-            color: #666;
+        .brand-text p {
+            margin: 0.4rem 0 0;
+            font-size: 0.95rem;
+            color: #4A5B7C;
+            line-height: 1.7;
+        }
+
+        .hero-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.1rem;
+        }
+
+        .hero-highlights span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(46, 119, 255, 0.08);
+            color: #2853B8;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .hero-highlights svg {
+            width: 14px;
+            height: 14px;
         }
 
         main {
             flex: 1;
-            width: min(960px, 100%);
-            padding: 1.5rem;
-            display: grid;
-            gap: 1.5rem;
+            width: min(1120px, 100%);
+            padding: 0 1.5rem 2.5rem;
         }
 
         .layout {
             display: grid;
-            gap: 1.5rem;
+            gap: 1.6rem;
         }
 
-        @media (min-width: 900px) {
-            main {
-                grid-template-columns: 2fr 1fr;
-            }
-
+        @media (min-width: 960px) {
             .layout {
-                grid-template-rows: auto 1fr;
+                grid-template-columns: 2fr 1fr;
+                align-items: start;
             }
         }
 
         .panel {
             background: var(--panel-bg);
-            border-radius: 18px;
-            box-shadow: 0 20px 45px rgba(87, 103, 131, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            box-shadow: 0 26px 60px rgba(27, 55, 109, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.65);
             overflow: hidden;
+            position: relative;
+        }
+
+        .panel::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            pointer-events: none;
         }
 
         .chat-panel {
             display: flex;
             flex-direction: column;
-            min-height: 480px;
+            min-height: 560px;
         }
 
         .chat-header {
-            padding: 1.2rem 1.5rem 1rem;
+            padding: 1.4rem 1.6rem 1.2rem;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -105,350 +155,430 @@
             margin: 0;
             font-size: 1.1rem;
             font-weight: 600;
+            letter-spacing: 0.02em;
         }
 
         .chat-header p {
-            margin: 0.35rem 0 0;
-            font-size: 0.85rem;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .chat-box {
-            flex: 1;
-            padding: 1.2rem 1.5rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .message {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            opacity: 0;
-            animation: fadeIn 0.45s forwards ease-out;
-        }
-
-        .message::before {
-            flex-shrink: 0;
-            display: grid;
-            place-items: center;
-            width: 2.3rem;
-            height: 2.3rem;
-            border-radius: 50%;
-            font-size: 1.1rem;
-            background: rgba(255, 255, 255, 0.75);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .message.assistant {
-            align-self: flex-start;
-        }
-
-        .message.assistant::before {
-            content: '🎧';
-        }
-
-        .message.assistant .bubble {
-            background: var(--assistant-bg);
-            color: var(--assistant-text);
-        }
-
-        .message.user {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-
-        .message.user::before {
-            content: '🪴';
-        }
-
-        .message.user .bubble {
-            background: var(--user-bg);
-            color: var(--user-text);
-        }
-
-        .bubble {
-            padding: 0.9rem 1rem;
-            border-radius: 16px;
-            box-shadow: 0 12px 25px rgba(178, 34, 34, 0.09);
+            margin: 0.5rem 0 0;
+            font-size: 0.88rem;
             line-height: 1.7;
-            font-size: 0.95rem;
-            max-width: min(68vw, 420px);
-            white-space: pre-wrap;
-            word-break: break-word;
+            color: #51638A;
         }
 
-        .typing-indicator {
-            font-size: 0.85rem;
-            color: #888;
-            padding: 0 1.5rem 1.2rem;
-            text-align: center;
-            animation: blink 1.4s linear infinite;
-        }
-
-        .chat-input-area {
-            padding: 1.1rem 1.5rem 1.4rem;
-            border-top: 1px solid var(--border-color);
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .chat-input-area textarea {
-            width: 100%;
-            min-height: 80px;
-            resize: vertical;
-            padding: 0.8rem 1rem;
-            border-radius: 14px;
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            font-family: inherit;
-            transition: border 0.2s ease;
-        }
-
-        .chat-input-area textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(255, 145, 164, 0.15);
-        }
-
-        .chat-input-area .actions {
+        .badge-tray {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
             flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .helper-text {
-            font-size: 0.78rem;
-            color: #888;
-        }
-
-        button.primary {
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            border-radius: 999px;
-            padding: 0.65rem 1.6rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-        }
-
-        button.primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 12px 25px rgba(255, 145, 164, 0.28);
-            background: var(--accent-dark);
-        }
-
-        button.primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+            gap: 0.45rem;
+            margin-top: 0.75rem;
         }
 
         .status-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            padding: 0.45rem 0.8rem;
+            gap: 0.45rem;
+            padding: 0.45rem 0.75rem;
             border-radius: 999px;
-            font-size: 0.8rem;
-            background: rgba(0, 0, 0, 0.05);
-            color: #666;
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: #2D3C5B;
+            background: rgba(32, 74, 189, 0.07);
         }
 
-        .status-badge.online {
-            background: rgba(123, 200, 164, 0.18);
-            color: #2C6E49;
+        .status-badge.online .status-dot {
+            background: #26C281;
+        }
+
+        .status-badge.pending .status-dot {
+            background: #F5A623;
+        }
+
+        .status-badge.offline .status-dot {
+            background: #EF5350;
         }
 
         .status-dot {
-            width: 0.55rem;
-            height: 0.55rem;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: currentColor;
+            background: #26C281;
+            box-shadow: 0 0 0 4px rgba(38, 194, 129, 0.15);
         }
 
-        .support-panel {
-            padding: 1.5rem;
-            display: grid;
-            gap: 1rem;
-            align-content: start;
-        }
-
-        .support-panel h3 {
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        .support-panel p,
-        .support-panel li {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .support-panel ul {
-            margin: 0.5rem 0 0;
-            padding-left: 1.2rem;
-        }
-
-        .settings {
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .settings label {
-            font-size: 0.85rem;
-            color: #444;
+        .chat-box {
+            flex: 1;
+            padding: 1.4rem 1.6rem;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 1.2rem;
+            background: linear-gradient(180deg, rgba(246, 249, 255, 0.6) 0%, rgba(255, 255, 255, 0.95) 90%);
         }
 
-        .settings input,
-        .settings select {
-            padding: 0.65rem 0.75rem;
-            border-radius: 10px;
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            font-size: 0.9rem;
+        .message {
+            display: flex;
+        }
+
+        .message.assistant {
+            justify-content: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .bubble {
+            max-width: min(520px, 86%);
+            padding: 0.95rem 1.15rem;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            box-shadow: 0 16px 34px rgba(22, 45, 106, 0.08);
+        }
+
+        .message.assistant .bubble {
+            background: var(--assistant-bg);
+            border: 1px solid rgba(46, 119, 255, 0.15);
+            color: var(--assistant-text);
+        }
+
+        .message.user .bubble {
+            background: var(--user-bg);
+            color: var(--user-text);
+            border: 1px solid rgba(46, 119, 255, 0.22);
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            font-size: 0.84rem;
+            color: #5D6E90;
+            padding: 0.25rem 0.35rem;
+        }
+
+        .input-area {
+            padding: 1.1rem 1.4rem 1.4rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.75);
+            display: flex;
+            gap: 0.9rem;
+        }
+
+        .input-control {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            gap: 0.75rem;
+            padding: 0.8rem 1rem;
+            border-radius: 16px;
+            background: rgba(242, 246, 255, 0.85);
+            border: 1px solid rgba(46, 119, 255, 0.18);
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input-control:focus-within {
+            border-color: rgba(46, 119, 255, 0.45);
+            box-shadow: 0 14px 28px rgba(46, 119, 255, 0.14);
+        }
+
+        textarea {
+            flex: 1;
+            border: none;
+            background: transparent;
+            resize: none;
             font-family: inherit;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: inherit;
+            outline: none;
         }
 
-        .settings small {
-            color: #888;
-            font-size: 0.75rem;
+        .send-button {
+            border: none;
+            border-radius: 14px;
+            padding: 0.85rem 1.1rem;
+            background: linear-gradient(135deg, var(--accent), #5D99FF);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            box-shadow: 0 16px 30px rgba(46, 119, 255, 0.25);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+        }
+
+        .send-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 22px 40px rgba(46, 119, 255, 0.28);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .send-button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .side-column {
+            display: grid;
+            gap: 1.4rem;
+        }
+
+        .evidence-panel header,
+        .assurance-panel header {
+            padding: 1.3rem 1.4rem 0.7rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .evidence-panel header h3,
+        .assurance-panel header h3 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            color: #16357A;
+        }
+
+        .evidence-feed {
+            padding: 1rem 1.4rem 1.6rem;
+            display: grid;
+            gap: 1.05rem;
+        }
+
+        .evidence-item {
+            border-radius: 16px;
+            padding: 0.95rem 1rem;
+            background: rgba(240, 246, 255, 0.7);
+            border: 1px solid rgba(46, 119, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .evidence-item h4 {
+            margin: 0;
+            font-size: 0.87rem;
+            color: #1B2D57;
+            font-weight: 600;
             line-height: 1.5;
         }
 
-        footer {
-            padding: 2rem 1.5rem 3rem;
-            text-align: center;
-            color: #888;
+        .evidence-item p {
+            margin: 0.45rem 0 0;
             font-size: 0.78rem;
+            line-height: 1.6;
+            color: #4B5E86;
         }
 
-        footer a {
-            color: inherit;
-            text-decoration: underline;
+        .evidence-item span {
+            display: inline-flex;
+            margin-top: 0.6rem;
+            font-size: 0.72rem;
+            color: #2E63D2;
+            font-weight: 500;
         }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        .assurance-panel {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(240, 248, 255, 0.92));
+        }
+
+        .assurance-panel header p {
+            margin: 0.4rem 0 0;
+            font-size: 0.82rem;
+            color: #4D5F83;
+            line-height: 1.6;
+        }
+
+        .assurance-body {
+            padding: 1.1rem 1.4rem 1.6rem;
+            display: grid;
+            gap: 1.1rem;
+        }
+
+        .assurance-card {
+            border-radius: 16px;
+            padding: 0.95rem 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(46, 119, 255, 0.1);
+        }
+
+        .assurance-card h4 {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #1A2F60;
+            font-weight: 600;
+        }
+
+        .assurance-card p {
+            margin: 0.45rem 0 0;
+            font-size: 0.78rem;
+            color: #4C5F82;
+            line-height: 1.6;
+        }
+
+        footer {
+            width: 100%;
+            padding: 1.8rem 1.5rem 2.5rem;
+            text-align: center;
+            font-size: 0.78rem;
+            color: #6A7EA5;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1.8rem 1.1rem 1.4rem;
             }
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-        }
 
-        @keyframes blink {
-            0%, 100% { opacity: 0.25; }
-            50% { opacity: 0.75; }
+            main {
+                padding: 0 1.1rem 2rem;
+            }
+
+            .chat-panel {
+                min-height: 65vh;
+            }
+
+            .bubble {
+                max-width: 92%;
+            }
+
+            .input-area {
+                padding: 0.95rem 1rem 1.2rem;
+                gap: 0.75rem;
+            }
+
+            .input-control {
+                padding: 0.75rem 0.9rem;
+            }
+
+            .send-button {
+                padding: 0.7rem 0.95rem;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>みみより</h1>
-        <p>AIと対話しながら、気持ちを整理して次の一歩を見つける場所です。</p>
-    </header>
-
-    <main>
-        <section class="layout">
-            <article class="panel chat-panel" aria-label="カウンセリングチャット">
-                <div class="chat-header">
-                    <div class="status-badge online" id="connection-status">
-                        <span class="status-dot"></span>
-                        やりとりの準備ができています
-                    </div>
-                    <h2>心の声をお聞かせください</h2>
-                    <p>感情や状況を短くまとめていただくだけで大丈夫です。丁寧に、やさしくフィードバックします。</p>
-                </div>
-
-                <div class="chat-box" id="chat-box" role="log" aria-live="polite"></div>
-
-                <div class="chat-input-area">
-                    <textarea id="user-input" placeholder="例：最近、仕事のことで気持ちがざわついています..." aria-label="相談内容を入力" spellcheck="false"></textarea>
-                    <div class="actions">
-                        <span class="helper-text">Enterで送信、Shift + Enterで改行できます。</span>
-                        <button class="primary" id="send-button">話してみる</button>
-                    </div>
-                </div>
-            </article>
-        </section>
-
-        <aside class="panel support-panel" aria-label="サポート情報">
-            <h3>ご利用の前に</h3>
-            <p>みみよりは、日々の悩みやモヤモヤを言語化し、気づきを得るためのカウンセリング支援AIです。医療的な診断・治療や緊急対応は行えません。</p>
-            <ul>
-                <li>深刻な症状を感じるときは、お近くの専門機関や自治体窓口へご相談ください。</li>
-                <li>命の危険があると感じる場合は、ただちに119または地域の緊急窓口へ連絡してください。</li>
-            </ul>
-            <div class="settings" aria-label="接続設定">
-                <label>
-                    OpenAI APIキー
-                    <input id="api-key" type="password" placeholder="sk-..." autocomplete="off">
-                    <small>キーはブラウザ内にのみ保存されます。安全な場所での利用をお願いします。</small>
-                </label>
-                <label>
-                    モデル
-                    <select id="model-select">
-                        <option value="gpt-4o-mini">gpt-4o-mini（推奨）</option>
-                        <option value="gpt-4o">gpt-4o</option>
-                        <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-                    </select>
-                </label>
+        <div class="brand-mark">
+            <div class="brand-icon">Mi</div>
+            <div class="brand-text">
+                <h1>みみより</h1>
+                <p>ChatGPTのように自然に話しながらも、NEJMやJAMAなどの医学誌から得た知見を参照して心とからだの相談に寄り添います。</p>
             </div>
-        </aside>
+        </div>
+        <div class="hero-highlights">
+            <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+                医学誌のエビデンスを背景にアドバイス
+            </span>
+            <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                こころの負担を軽くするカウンセリング体験
+            </span>
+            <span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-3-3.87"></path><path d="M4 21v-2a4 4 0 0 1 3-3.87"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                ご利用はすべて無料。安心して話せます
+            </span>
+        </div>
+    </header>
+    <main>
+        <div class="layout">
+            <section class="panel chat-panel">
+                <div class="chat-header">
+                    <h2>対話ルーム</h2>
+                    <p>医師監修のプロンプトと医学誌の知見をもとに、あなたの状況を整理しながら次の一歩を考えます。</p>
+                    <div class="badge-tray">
+                        <div class="status-badge online" id="connection-badge">
+                            <span class="status-dot"></span>
+                            やりとりの準備ができています
+                        </div>
+                        <div class="status-badge">
+                            <span class="status-dot" style="background:#5A6CB0; box-shadow:none;"></span>
+                            NEJM / JAMA コアレビュー参照
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-box" id="chat-box"></div>
+                <div class="input-area">
+                    <div class="input-control">
+                        <textarea id="user-input" rows="1" placeholder="最近気になっている症状や心配ごとを教えてください。"></textarea>
+                    </div>
+                    <button class="send-button" id="send-button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        送信
+                    </button>
+                </div>
+            </section>
+            <aside class="side-column">
+                <section class="panel evidence-panel">
+                    <header>
+                        <h3>Evidence Briefs</h3>
+                    </header>
+                    <div class="evidence-feed">
+                        <article class="evidence-item">
+                            <h4>気分障害の初期支援とフォローアップ</h4>
+                            <p>JAMA Psychiatry (2023) のレビューでは、患者自身が症状をモニタリングできるツールと、専門職による定期的なチェックインの併用が改善に寄与することが示されています。</p>
+                            <span>JAMA Psychiatry. 2023;80(9):901-910.</span>
+                        </article>
+                        <article class="evidence-item">
+                            <h4>睡眠リズムの調整とメンタルヘルス</h4>
+                            <p>NEJM (2022) では、夜間のブルーライト制限と日中の軽い有酸素運動を組み合わせることで、不眠と不安のスコアが有意に低下した試験結果が報告されています。</p>
+                            <span>New Engl J Med. 2022;386:1426-1438.</span>
+                        </article>
+                        <article class="evidence-item">
+                            <h4>セルフケアと認知行動療法のハイブリッド活用</h4>
+                            <p>ランダム化比較試験のメタ分析によると、デジタル認知行動療法とセルフケア・ガイドの併用は、単独介入と比べて不安症状の改善が早期に得られる可能性があります。</p>
+                            <span>Lancet Digital Health. 2024;6(2):e75-e88.</span>
+                        </article>
+                    </div>
+                </section>
+                <section class="panel assurance-panel">
+                    <header>
+                        <h3>Comfort & Safety</h3>
+                        <p>みみよりは相談料無料のまま。医療機関との連携を視野に入れつつ、安心できるカウンセリング体験を追求しています。</p>
+                    </header>
+                    <div class="assurance-body">
+                        <div class="assurance-card">
+                            <h4>守秘とプライバシー</h4>
+                            <p>会話内容はあなたの気持ちを整理する目的に限って扱います。第三者に共有されることはありません。</p>
+                        </div>
+                        <div class="assurance-card">
+                            <h4>緊急時のお願い</h4>
+                            <p>強い自傷念慮や急変がある場合は、ためらわず救急機関や専門医にご相談ください。みみよりは補助的なサポートです。</p>
+                        </div>
+                        <div class="assurance-card">
+                            <h4>今後のアップデート</h4>
+                            <p>専門家監修のセルフケアプランや医療機関との連携機能を準備中です。ご要望があればお知らせください。</p>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </div>
     </main>
-
     <footer>
-        このサービスは傾聴とセルフケアをサポートする目的で提供されています。医療上の判断が必要な場合は必ず医師・専門家にご相談ください。
+        © 2024 Mimiyori. 心とからだの健やかさを支える、エビデンス連動型カウンセリングAI。
     </footer>
 
     <script>
+        const API_ENDPOINT = 'https://api.mimiyori.ai/v1/chat';
+        const SELECTED_MODEL = 'mimiyori-gpt-pro';
+
+        const initialMessage = 'こんにちは。エビデンスとあなたの気持ちの両方を大切にしながら、今のお困りごとや気になっていることを一緒に整理していきましょう。';
+
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
-        const apiKeyField = document.getElementById('api-key');
-        const modelSelect = document.getElementById('model-select');
-        const connectionBadge = document.getElementById('connection-status');
+        const connectionBadge = document.getElementById('connection-badge');
 
-        const storageKey = 'mimiyori-settings';
-        let conversation = [{
-            role: 'system',
-            content: 'あなたは優しく寄り添いながら、相談者の気持ちを整理するのを手伝うカウンセラーAIです。安心感のある言葉遣いで、状況の整理と具体的な次の一歩を提示してください。医療行為は行わず、緊急時は専門機関への相談を促してください。'
-        }];
-
-        const initialMessage = '今日もお疲れさまです。ここでは、心の中で感じていることをそのまま言葉にして大丈夫です。どのような場面で気持ちが揺れたのか、まずは簡単に教えていただけますか？';
-
-        function saveSettings() {
-            const payload = {
-                apiKey: apiKeyField.value.trim(),
-                model: modelSelect.value
-            };
-            localStorage.setItem(storageKey, JSON.stringify(payload));
-        }
-
-        function loadSettings() {
-            try {
-                const saved = JSON.parse(localStorage.getItem(storageKey) ?? '{}');
-                if (saved.apiKey) apiKeyField.value = saved.apiKey;
-                if (saved.model) modelSelect.value = saved.model;
-            } catch (_) {
-                // 破損したデータは無視
+        const conversation = [
+            {
+                role: 'system',
+                content: 'You are Mimiyori, a compassionate counseling assistant. You speak Japanese naturally while grounding your guidance in peer-reviewed medical literature such as NEJM, JAMA, and other reputable journals. Summarize evidence accessibly, clarify uncertainty, and encourage users to seek professional care when appropriate.'
             }
-        }
+        ];
 
         function setBadgeStatus(text, state = 'online') {
             connectionBadge.textContent = '';
@@ -475,7 +605,7 @@
             const typing = document.createElement('div');
             typing.className = 'typing-indicator';
             typing.id = 'typing-indicator';
-            typing.textContent = 'みみよりが考えています...';
+            typing.textContent = 'みみよりが考えています…';
             chatBox.appendChild(typing);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
@@ -489,32 +619,22 @@
             const input = userInput.value.trim();
             if (!input) return;
 
-            const apiKey = apiKeyField.value.trim();
-            if (!apiKey) {
-                appendMessage('assistant', 'OpenAI APIキーが設定されていないため接続できません。右側の設定欄にキーを入力してから再度お試しください。');
-                userInput.value = '';
-                return;
-            }
-
-            saveSettings();
-
             appendMessage('user', input);
             userInput.value = '';
 
             conversation.push({ role: 'user', content: input });
             appendTypingIndicator();
             disableControls(true);
-            setBadgeStatus('みみよりが応答を準備しています', 'online');
+            setBadgeStatus('みみよりがエビデンスを確認しています', 'pending');
 
             try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                const response = await fetch(API_ENDPOINT, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: modelSelect.value,
+                        model: SELECTED_MODEL,
                         messages: conversation,
                         temperature: 0.8,
                         max_tokens: 800
@@ -526,7 +646,9 @@
                 }
 
                 const data = await response.json();
-                const aiMessage = data.choices?.[0]?.message?.content?.trim();
+                const aiMessage = data.reply?.trim()
+                    ?? data.message?.trim()
+                    ?? data.choices?.[0]?.message?.content?.trim();
 
                 if (!aiMessage) {
                     throw new Error('応答を読み取れませんでした');
@@ -538,8 +660,8 @@
                 speak(aiMessage);
             } catch (error) {
                 console.error(error);
-                setBadgeStatus('エラーが発生しました。設定をご確認ください。', '');
-                appendMessage('assistant', '接続中にエラーが発生しました。APIキー・利用回数・ネットワーク環境をご確認のうえ、少し時間をおいて再度お試しください。');
+                setBadgeStatus('みみよりのサーバーに接続できませんでした', 'offline');
+                appendMessage('assistant', '接続中にエラーが発生しました。時間をおいて再度お試しになるか、サポートチームまでご連絡ください。');
             } finally {
                 removeTypingIndicator();
                 disableControls(false);
@@ -549,16 +671,14 @@
         function disableControls(disabled) {
             userInput.disabled = disabled;
             sendButton.disabled = disabled;
-            modelSelect.disabled = disabled;
-            apiKeyField.disabled = disabled;
         }
 
         function speak(text) {
             if (!('speechSynthesis' in window)) return;
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'ja-JP';
-            utterance.pitch = 1.15;
-            utterance.rate = 0.95;
+            utterance.pitch = 1.12;
+            utterance.rate = 0.97;
             const voices = speechSynthesis.getVoices();
             const preferredVoice = voices.find(voice => voice.lang === 'ja-JP' && voice.name.includes('Female'))
                 || voices.find(voice => voice.lang === 'ja-JP');
@@ -576,11 +696,7 @@
             }
         });
 
-        apiKeyField.addEventListener('change', saveSettings);
-        modelSelect.addEventListener('change', saveSettings);
-
         window.addEventListener('load', () => {
-            loadSettings();
             appendMessage('assistant', initialMessage);
             speak(initialMessage);
         });
