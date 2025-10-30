@@ -2,85 +2,193 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-    <title>みみより | エビデンスと寄り添うカウンセリングAI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Poppins:wght@500;600&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title>みみより | 根拠と寄り添いで支えるカウンセリングAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             color-scheme: light;
-            --oe-sans: 'Schibsted Grotesk', 'Poppins', sans-serif;
-            --oe-serif: 'Lora', 'Noto Serif JP', serif;
-            --body-font: 'Noto Sans JP', var(--oe-sans);
-            --bg-gradient: radial-gradient(circle at 0% 0%, #F4F8FF 0%, #F9FBFF 38%, #FFFFFF 100%);
-            --hero-card-gradient: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(235, 243, 255, 0.78));
-            --panel-bg: rgba(255, 255, 255, 0.96);
-            --accent: #215CFF;
-            --accent-soft: rgba(33, 92, 255, 0.16);
-            --accent-dark: #1637AF;
-            --assistant-bg: #F1F5FF;
-            --assistant-text: #283965;
-            --user-bg: #E6EEFF;
-            --user-text: #143AA2;
-            --border-color: rgba(35, 67, 142, 0.12);
-            --shadow-strong: rgba(28, 54, 123, 0.18);
-            --panel-radius: 22px;
+            --font-sans: 'Noto Sans JP', 'Schibsted Grotesk', system-ui, sans-serif;
+            --font-serif: 'Lora', 'Noto Serif JP', serif;
+            --bg-surface: #ffffff;
+            --bg-muted: #f5f8ff;
+            --bg-gradient: radial-gradient(120% 120% at 20% 0%, #f5f8ff 0%, #ffffff 45%, #f9fcff 100%);
+            --line: rgba(32, 61, 126, 0.14);
+            --shadow: 0 32px 60px -24px rgba(25, 55, 123, 0.32);
+            --shadow-soft: 0 20px 40px -28px rgba(14, 36, 96, 0.25);
+            --accent: #2850ff;
+            --accent-soft: rgba(40, 80, 255, 0.12);
+            --accent-strong: #1531a8;
+            --text-strong: #112955;
+            --text-muted: #4e5f86;
+            --radius-large: 28px;
+            --radius-medium: 20px;
         }
 
-        * {
+        *, *::before, *::after {
             box-sizing: border-box;
-            scroll-behavior: smooth;
         }
 
         body {
-            font-family: var(--body-font);
             margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            font-family: var(--font-sans);
             background: var(--bg-gradient);
-            color: #1C2B42;
+            color: var(--text-strong);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .page {
+            width: min(1120px, 100%);
+            padding: clamp(1.2rem, 3vw, 2.5rem) clamp(1rem, 4vw, 3rem) 2.8rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: clamp(2rem, 5vw, 3.4rem);
         }
 
         header {
-            width: 100%;
-            padding: 2.4rem 1.5rem 1.8rem;
             display: flex;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            flex-direction: column;
+            gap: 1.6rem;
         }
 
-        header::before {
+        .hero {
+            background: linear-gradient(140deg, rgba(255, 255, 255, 0.95), rgba(235, 242, 255, 0.9));
+            border-radius: calc(var(--radius-large) * 1.2);
+            padding: clamp(2rem, 4vw, 3.25rem);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .hero::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 20% -30%, rgba(33, 92, 255, 0.12) 0%, rgba(33, 92, 255, 0) 55%),
-                radial-gradient(circle at 80% -10%, rgba(111, 178, 255, 0.16) 0%, rgba(111, 178, 255, 0) 60%);
+            border-radius: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.55);
             pointer-events: none;
         }
 
-        .clinical-hero {
-            position: relative;
-            max-width: 768px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 2.4rem clamp(1.25rem, 5vw, 3rem);
-            background: var(--hero-card-gradient);
-            border-radius: calc(2 * var(--panel-radius));
-            display: flex;
-            flex-direction: column;
+        .hero__badge {
+            display: inline-flex;
             align-items: center;
-            gap: 1.4rem;
-            text-align: center;
-            box-shadow: 0 28px 70px rgba(28, 54, 123, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            min-height: 480px;
-            overflow: hidden;
+            gap: 0.5rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            font-size: 0.78rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
-        .clinical-hero::after {
+        .hero__heading {
+            display: flex;
+            align-items: center;
+            gap: clamp(1rem, 3vw, 1.6rem);
+            flex-wrap: wrap;
+        }
+
+        .hero__emblem {
+            width: clamp(52px, 10vw, 68px);
+            height: clamp(52px, 10vw, 68px);
+            border-radius: 22px;
+            background: linear-gradient(150deg, #2850ff, #7aa8ff);
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: 600;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            box-shadow: 0 24px 44px rgba(40, 80, 255, 0.35);
+        }
+
+        .hero__title {
+            margin: 0;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            letter-spacing: 0.02em;
+            font-family: 'Schibsted Grotesk', var(--font-sans);
+        }
+
+        .hero__subtitle {
+            margin: 0.35rem 0 0;
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .hero__lead {
+            margin: 1rem 0 0;
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: #21386b;
+            max-width: 650px;
+        }
+
+        .hero__pills {
+            margin: 1.4rem 0 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .hero__pills li {
+            padding: 0.55rem 0.95rem;
+            border-radius: 999px;
+            background: rgba(40, 80, 255, 0.08);
+            color: #284e99;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .hero__free-note {
+            margin: 1rem 0 0;
+            font-size: 0.9rem;
+            color: #405688;
+            background: rgba(255, 255, 255, 0.82);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.7rem 1rem;
+            border-radius: var(--radius-medium);
+            border: 1px solid rgba(40, 80, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        main {
+            display: grid;
+            gap: 1.8rem;
+        }
+
+        @media (min-width: 960px) {
+            main {
+                grid-template-columns: 5fr 3fr;
+                align-items: start;
+            }
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border-radius: var(--radius-large);
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(14px);
+        }
+
+        .card::after {
             content: "";
             position: absolute;
             inset: 0;
@@ -89,226 +197,95 @@
             pointer-events: none;
         }
 
-        .hero-topline {
-            font-family: var(--oe-sans);
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            font-size: 0.72rem;
-            color: #3959A8;
-            opacity: 0.85;
-        }
-
-        .brand-mark {
-            display: flex;
-            gap: 0.9rem;
-            align-items: center;
-        }
-
-        .brand-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, #215CFF, #7DA6FF);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-family: var(--oe-sans);
-            font-size: 1.35rem;
-            font-weight: 600;
-            box-shadow: 0 20px 45px rgba(33, 92, 255, 0.24);
-        }
-
-        .brand-text h1 {
-            margin: 0;
-            font-family: var(--oe-sans);
-            font-size: clamp(1.6rem, 1.1rem + 2.4vw, 2.65rem);
-            color: #0F2550;
-            letter-spacing: 0.015em;
-        }
-
-        .brand-text p {
-            margin: 0.5rem 0 0;
-            font-size: 0.98rem;
-            color: #4A5E89;
-            line-height: 1.75;
-        }
-
-        .hero-subheading {
-            max-width: 520px;
-            margin: 0;
-            font-family: var(--oe-serif);
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #30436F;
-        }
-
-        .hero-highlights {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.65rem;
-            margin: 0.6rem 0 0;
-        }
-
-        .hero-highlights span {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.55rem;
-            padding: 0.5rem 0.85rem;
-            border-radius: 999px;
-            background: rgba(33, 92, 255, 0.08);
-            color: #2E54B4;
-            font-size: 0.78rem;
-            font-weight: 500;
-            letter-spacing: 0.01em;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-        }
-
-        .hero-highlights svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .hero-footnote {
-            margin-top: 0.8rem;
-            font-size: 0.75rem;
-            color: #5D6FA1;
-            line-height: 1.7;
-        }
-
-        .hero-footnote strong {
-            font-weight: 600;
-            color: #2546A4;
-        }
-
-        main {
-            flex: 1;
-            width: min(1120px, 100%);
-            padding: 0 1.5rem 2.5rem;
-        }
-
-        .layout {
-            display: grid;
-            gap: 1.6rem;
-        }
-
-        @media (min-width: 960px) {
-            .layout {
-                grid-template-columns: 2fr 1fr;
-                align-items: start;
-            }
-        }
-
-        .panel {
-            background: var(--panel-bg);
-            border-radius: var(--panel-radius);
-            box-shadow: 0 30px 70px rgba(25, 51, 118, 0.14);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            overflow: hidden;
-            position: relative;
-            backdrop-filter: blur(18px);
-        }
-
-        .panel::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            border: 1px solid rgba(255, 255, 255, 0.38);
-            pointer-events: none;
-        }
-
-        .chat-panel {
+        .chat {
             display: flex;
             flex-direction: column;
-            min-height: 560px;
+            min-height: clamp(520px, 70vh, 680px);
         }
 
-        .chat-header {
-            padding: 1.4rem 1.6rem 1.2rem;
-            border-bottom: 1px solid var(--border-color);
+        .chat__header {
+            padding: 1.6rem clamp(1.2rem, 2vw, 1.8rem) 1.4rem;
+            border-bottom: 1px solid var(--line);
         }
 
-        .chat-header h2 {
+        .chat__heading {
             margin: 0;
-            font-size: 1.12rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
+            font-size: 1.1rem;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: #1D3472;
-            font-family: var(--oe-sans);
+            font-weight: 600;
+            color: var(--accent-strong);
         }
 
-        .chat-header p {
-            margin: 0.6rem 0 0;
-            font-size: 0.9rem;
-            line-height: 1.75;
-            color: #4B5F87;
-            font-family: var(--oe-serif);
+        .chat__lead {
+            margin: 0.8rem 0 0;
+            font-size: 0.92rem;
+            line-height: 1.8;
+            color: var(--text-muted);
         }
 
-        .badge-tray {
+        .status-tray {
+            margin-top: 1.1rem;
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.9rem;
+            gap: 0.6rem;
         }
 
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.48rem 0.85rem;
+            padding: 0.45rem 0.95rem;
             border-radius: 999px;
-            font-size: 0.73rem;
+            font-size: 0.78rem;
             font-weight: 600;
-            color: #1F3B7A;
-            background: rgba(33, 92, 255, 0.08);
-            border: 1px solid rgba(33, 92, 255, 0.18);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-            letter-spacing: 0.03em;
+            color: var(--accent-strong);
+            background: var(--accent-soft);
+            border: 1px solid rgba(40, 80, 255, 0.18);
         }
 
-        .status-badge.online .status-dot {
-            background: #27C680;
-            box-shadow: 0 0 0 4px rgba(39, 198, 128, 0.18);
-        }
-
-        .status-badge.pending .status-dot {
-            background: #F3A440;
-            box-shadow: 0 0 0 4px rgba(243, 164, 64, 0.18);
-        }
-
-        .status-badge.offline .status-dot {
-            background: #EF5C5C;
-            box-shadow: 0 0 0 4px rgba(239, 92, 92, 0.18);
-        }
-
-        .status-dot {
+        .status-badge .status-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #27C680;
+            background: #2bc48a;
+            box-shadow: 0 0 0 4px rgba(43, 196, 138, 0.18);
         }
 
-        .chat-box {
+        .status-badge.offline {
+            color: #aa2330;
+            background: rgba(233, 63, 81, 0.12);
+            border-color: rgba(233, 63, 81, 0.32);
+        }
+
+        .status-badge.offline .status-dot {
+            background: #e93f51;
+            box-shadow: 0 0 0 4px rgba(233, 63, 81, 0.18);
+        }
+
+        .status-badge.pending {
+            color: #d07a16;
+            background: rgba(249, 171, 66, 0.16);
+            border-color: rgba(249, 171, 66, 0.26);
+        }
+
+        .status-badge.pending .status-dot {
+            background: #f9ab42;
+            box-shadow: 0 0 0 4px rgba(249, 171, 66, 0.18);
+        }
+
+        .chat__stream {
             flex: 1;
-            padding: 1.4rem 1.6rem;
-            overflow-y: auto;
+            padding: 1.4rem clamp(1.2rem, 2vw, 1.8rem);
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
-            background: linear-gradient(180deg, rgba(245, 248, 255, 0.72) 0%, rgba(255, 255, 255, 0.97) 85%);
+            overflow-y: auto;
+            background: linear-gradient(180deg, rgba(245, 249, 255, 0.85) 0%, rgba(255, 255, 255, 0.96) 80%);
         }
 
         .message {
             display: flex;
-        }
-
-        .message.assistant {
-            justify-content: flex-start;
         }
 
         .message.user {
@@ -316,424 +293,330 @@
         }
 
         .bubble {
-            max-width: min(520px, 86%);
-            padding: 0.98rem 1.2rem;
+            max-width: min(560px, 88%);
+            padding: 1rem 1.2rem;
             border-radius: 20px;
             font-size: 0.95rem;
-            line-height: 1.8;
-            box-shadow: 0 18px 36px rgba(22, 45, 106, 0.08);
+            line-height: 1.75;
+            border: 1px solid rgba(40, 80, 255, 0.14);
+            box-shadow: 0 16px 30px rgba(17, 43, 96, 0.08);
             backdrop-filter: blur(12px);
-            border: 1px solid transparent;
         }
 
         .message.assistant .bubble {
-            background: linear-gradient(145deg, rgba(239, 245, 255, 0.95), rgba(224, 236, 255, 0.92));
-            border-color: rgba(33, 92, 255, 0.16);
-            color: var(--assistant-text);
+            background: linear-gradient(140deg, rgba(235, 242, 255, 0.96), rgba(213, 227, 255, 0.9));
+            color: #1f315e;
         }
 
         .message.user .bubble {
-            background: linear-gradient(145deg, rgba(228, 236, 255, 0.96), rgba(203, 220, 255, 0.88));
-            color: var(--user-text);
-            border-color: rgba(33, 92, 255, 0.28);
+            background: linear-gradient(140deg, rgba(223, 233, 255, 0.95), rgba(195, 212, 255, 0.88));
+            color: #17388f;
         }
 
         .typing-indicator {
             align-self: flex-start;
-            font-size: 0.84rem;
-            color: #55648C;
-            padding: 0.3rem 0.5rem;
-            background: rgba(33, 92, 255, 0.08);
-            border-radius: 12px;
+            padding: 0.4rem 0.75rem;
+            border-radius: 14px;
+            background: rgba(40, 80, 255, 0.08);
+            font-size: 0.8rem;
+            color: #4a5e92;
         }
 
-        .input-area {
-            padding: 1.15rem 1.4rem 1.45rem;
-            border-top: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.78);
+        .chat__input {
+            padding: 1.2rem clamp(1.1rem, 2vw, 1.6rem) 1.4rem;
+            border-top: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.85);
             display: flex;
-            gap: 0.9rem;
+            gap: 0.85rem;
         }
 
-        .input-control {
+        .input-shell {
             flex: 1;
             display: flex;
-            align-items: flex-end;
-            gap: 0.75rem;
-            padding: 0.85rem 1.05rem;
-            border-radius: 18px;
-            background: rgba(241, 246, 255, 0.88);
-            border: 1px solid rgba(33, 92, 255, 0.18);
+            padding: 0.9rem 1.1rem;
+            border-radius: var(--radius-medium);
+            background: rgba(240, 244, 255, 0.9);
+            border: 1px solid rgba(40, 80, 255, 0.16);
             transition: border 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .input-control:focus-within {
-            border-color: rgba(33, 92, 255, 0.46);
-            box-shadow: 0 16px 34px rgba(33, 92, 255, 0.16);
+        .input-shell:focus-within {
+            border-color: rgba(40, 80, 255, 0.45);
+            box-shadow: 0 18px 40px rgba(40, 80, 255, 0.18);
         }
 
         textarea {
             flex: 1;
             border: none;
             background: transparent;
-            resize: none;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 0.96rem;
             line-height: 1.7;
+            resize: none;
             color: inherit;
             outline: none;
         }
 
-        .send-button {
-            border: none;
-            border-radius: 16px;
-            padding: 0.85rem 1.15rem;
-            background: linear-gradient(135deg, var(--accent), #4F8AFF);
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            box-shadow: 0 18px 34px rgba(33, 92, 255, 0.25);
-            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+        button {
+            font-family: inherit;
         }
 
-        .send-button:hover {
+        .send-button {
+            border: none;
+            border-radius: 18px;
+            padding: 0.85rem 1.1rem;
+            background: linear-gradient(145deg, var(--accent), #648dff);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            box-shadow: 0 20px 38px rgba(40, 80, 255, 0.28);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+
+        .send-button:hover:not(:disabled) {
             transform: translateY(-1px);
-            box-shadow: 0 24px 44px rgba(33, 92, 255, 0.28);
+            box-shadow: 0 26px 48px rgba(40, 80, 255, 0.3);
         }
 
         .send-button:disabled {
             opacity: 0.55;
             cursor: not-allowed;
             box-shadow: none;
-            transform: none;
         }
 
-        .send-button svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .side-column {
+        .side-stack {
             display: grid;
             gap: 1.4rem;
         }
 
-        .evidence-panel {
-            background: linear-gradient(150deg, rgba(244, 248, 255, 0.95), rgba(234, 242, 255, 0.92));
+        .panel {
+            padding: 1.6rem clamp(1.2rem, 3vw, 1.8rem);
+            display: grid;
+            gap: 1.2rem;
         }
 
-        .evidence-panel header,
-        .assurance-panel header {
-            padding: 1.35rem 1.5rem 0.75rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .evidence-panel header h3,
-        .assurance-panel header h3 {
+        .panel header h3 {
             margin: 0;
-            font-size: 0.88rem;
-            font-weight: 600;
-            letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #1C3B82;
-            font-family: var(--oe-sans);
+            letter-spacing: 0.12em;
+            font-size: 0.9rem;
+            color: var(--accent-strong);
         }
 
-        .evidence-panel header p,
-        .assurance-panel header p {
-            margin: 0.45rem 0 0;
-            font-size: 0.8rem;
-            line-height: 1.65;
-            color: #4C5E86;
-            font-family: var(--oe-serif);
+        .panel header p {
+            margin: 0.65rem 0 0;
+            font-size: 0.86rem;
+            line-height: 1.7;
+            color: var(--text-muted);
         }
 
-        .evidence-feed {
-            padding: 1.05rem 1.5rem 1.65rem;
+        .evidence-list {
             display: grid;
             gap: 1.1rem;
         }
 
-        .evidence-item {
-            position: relative;
-            border-radius: 18px;
-            padding: 1rem 1.05rem 1rem 1.15rem;
-            background: rgba(235, 242, 255, 0.9);
-            border: 1px solid rgba(33, 92, 255, 0.16);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
-        }
-
-        .evidence-item::before {
-            content: "";
-            position: absolute;
-            left: 1rem;
-            top: 1rem;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4C8BFF;
-            box-shadow: 0 0 0 6px rgba(76, 139, 255, 0.18);
-        }
-
-        .evidence-item h4 {
-            margin: 0;
-            font-size: 0.9rem;
-            color: #1A2F5E;
-            font-weight: 600;
-            line-height: 1.55;
-            padding-left: 1.1rem;
-        }
-
-        .evidence-item p {
-            margin: 0.5rem 0 0;
-            font-size: 0.79rem;
-            line-height: 1.65;
-            color: #475A86;
-        }
-
-        .evidence-item span {
-            display: inline-flex;
-            margin-top: 0.65rem;
-            font-size: 0.7rem;
-            color: #2E63D2;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .assurance-panel {
-            background: linear-gradient(150deg, rgba(255, 255, 255, 0.95), rgba(240, 247, 255, 0.92));
-        }
-
-        .assurance-body {
-            padding: 1.2rem 1.5rem 1.7rem;
+        .evidence {
+            border-left: 3px solid rgba(40, 80, 255, 0.35);
+            padding-left: 1rem;
             display: grid;
-            gap: 1.15rem;
+            gap: 0.4rem;
         }
 
-        .assurance-card {
-            border-radius: 18px;
-            padding: 1rem 1.1rem;
-            background: rgba(255, 255, 255, 0.82);
-            border: 1px solid rgba(33, 92, 255, 0.12);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-        }
-
-        .assurance-card h4 {
+        .evidence h4 {
             margin: 0;
-            font-size: 0.86rem;
-            color: #1A3062;
-            font-weight: 600;
+            font-size: 0.92rem;
+            color: #1e346a;
         }
 
-        .assurance-card p {
-            margin: 0.48rem 0 0;
-            font-size: 0.79rem;
-            color: #4B5E83;
-            line-height: 1.65;
+        .evidence p {
+            margin: 0;
+            font-size: 0.84rem;
+            line-height: 1.7;
+            color: #4a5c83;
+        }
+
+        .evidence span {
+            font-size: 0.74rem;
+            color: rgba(33, 52, 110, 0.7);
+            letter-spacing: 0.04em;
+        }
+
+        .assurance {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .assurance-item {
+            padding: 1rem 1.1rem;
+            border-radius: var(--radius-medium);
+            background: rgba(245, 249, 255, 0.85);
+            border: 1px solid rgba(40, 80, 255, 0.1);
+            display: grid;
+            gap: 0.45rem;
+        }
+
+        .assurance-item h4 {
+            margin: 0;
+            font-size: 0.88rem;
+            color: #1c315f;
+        }
+
+        .assurance-item p {
+            margin: 0;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: #506089;
         }
 
         footer {
-            width: 100%;
-            padding: 1.8rem 1.5rem 2.5rem;
+            margin-top: 1rem;
             text-align: center;
             font-size: 0.78rem;
-            color: #6678A1;
-            font-family: var(--oe-sans);
+            color: #60709a;
             letter-spacing: 0.05em;
         }
 
         @media (max-width: 768px) {
-            header {
-                padding: 1.8rem 1.1rem 1.4rem;
+            .hero__heading {
+                align-items: flex-start;
             }
 
-            .clinical-hero {
-                padding: 2rem 1.2rem 1.9rem;
-                gap: 1.1rem;
-                min-height: auto;
+            .hero__lead {
+                font-size: 0.98rem;
             }
 
-            .brand-mark {
-                flex-direction: column;
-                gap: 0.65rem;
-            }
-
-            .brand-text p {
-                font-size: 0.92rem;
-            }
-
-            .hero-subheading {
-                font-size: 0.93rem;
-            }
-
-            .hero-footnote {
-                font-size: 0.7rem;
-            }
-
-            .hero-highlights span {
-                font-size: 0.72rem;
-                padding: 0.45rem 0.75rem;
-            }
-
-            main {
-                padding: 0 1.1rem 2rem;
-            }
-
-            .layout {
-                gap: 1.25rem;
-            }
-
-            .side-column {
-                gap: 1.2rem;
-            }
-
-            .evidence-feed,
-            .assurance-body {
-                padding-left: 1.15rem;
-                padding-right: 1.15rem;
-            }
-
-            .chat-panel {
-                min-height: 65vh;
+            .chat {
+                min-height: 60vh;
             }
 
             .bubble {
                 max-width: 92%;
             }
 
-            .input-area {
-                padding: 0.95rem 1rem 1.2rem;
-                gap: 0.75rem;
-            }
-
-            .input-control {
-                padding: 0.75rem 0.9rem;
+            .chat__input {
+                flex-direction: column;
             }
 
             .send-button {
-                padding: 0.7rem 0.95rem;
+                justify-content: center;
+                width: 100%;
+                padding: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="clinical-hero">
-            <span class="hero-topline">Evidence Guided Counseling</span>
-            <div class="brand-mark">
-                <div class="brand-icon">Mi</div>
-                <div class="brand-text">
-                    <h1>みみより</h1>
-                    <p>心のゆらぎを受け止めながら、医学誌の知見で次の一歩を照らすカウンセリングAIです。</p>
+    <div class="page">
+        <header>
+            <section class="hero">
+                <span class="hero__badge">Evidence Guided Counseling</span>
+                <div class="hero__heading">
+                    <div class="hero__emblem">Mi</div>
+                    <div>
+                        <h1 class="hero__title">みみより</h1>
+                        <p class="hero__subtitle">臨床ジャーナルの知見と寄り添いを両立させた、カウンセリング特化型のAIコンパニオンです。</p>
+                    </div>
                 </div>
-            </div>
-            <p class="hero-subheading">OpenEvidenceのような臨床的な視点を取り入れ、NEJMやJAMAなどの一次情報を背景にあなたの状況を整理します。温かさと根拠の両方を大切にお話ししましょう。</p>
-            <div class="hero-highlights">
-                <span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-                    医学誌レベルのエビデンスを参照
-                </span>
-                <span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-                    不安や症状を整理するカウンセリング
-                </span>
-                <span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-3-3.87"></path><path d="M4 21v-2a4 4 0 0 1 3-3.87"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    相談料は無料。気兼ねなくどうぞ
-                </span>
-            </div>
-            <p class="hero-footnote"><strong>NEJM / JAMA</strong> などの一次情報データベースを横断し、最新の臨床研究トーンを保ちながら、みみよりならではの寄り添いをお届けします。</p>
-        </div>
-    </header>
-    <main>
-        <div class="layout">
-            <section class="panel chat-panel">
-                <div class="chat-header">
-                    <h2>対話ルーム</h2>
-                    <p>医師監修のプロンプトと医学誌の知見をもとに、あなたの状況を整理しながら次の一歩を考えます。</p>
-                    <div class="badge-tray">
-                        <div class="status-badge online" id="connection-badge">
+                <p class="hero__lead">OpenEvidenceの臨床的な視点から着想を得て、NEJMやJAMAといった一次情報を背景に、あなたの不安や症状をやさしく言語化します。根拠を確かめながら、次の一歩を一緒に考えましょう。</p>
+                <ul class="hero__pills">
+                    <li>NEJM / JAMA / Lancet をリサーチ</li>
+                    <li>医師監修プロンプトで診断ではなく助言</li>
+                    <li>安心の無料カウンセリング体験</li>
+                </ul>
+                <p class="hero__free-note">ご利用はずっと無料。医学情報を参照しながらも、あなたのペースに寄り添います。</p>
+            </section>
+        </header>
+
+        <main>
+            <section class="card chat">
+                <div class="chat__header">
+                    <h2 class="chat__heading">相談ルーム</h2>
+                    <p class="chat__lead">最新のエビデンスを確認しつつ、気持ちの変化や症状を整理していきます。診断は行いませんが、医療的な受診先を検討する際のヒントをお伝えします。</p>
+                    <div class="status-tray">
+                        <div class="status-badge" id="connection-badge">
                             <span class="status-dot"></span>
-                            やりとりの準備ができています
+                            接続準備が整いました
                         </div>
                         <div class="status-badge">
-                            <span class="status-dot" style="background:#5A6CB0; box-shadow:none;"></span>
-                            NEJM / JAMA コアレビュー参照
+                            <span class="status-dot" style="background:#5d6fb4; box-shadow:none;"></span>
+                            NEJM &amp; JAMA コアレビュー参照
                         </div>
                     </div>
                 </div>
-                <div class="chat-box" id="chat-box"></div>
-                <div class="input-area">
-                    <div class="input-control">
-                        <textarea id="user-input" rows="1" placeholder="最近気になっている症状や心配ごとを教えてください。"></textarea>
+                <div class="chat__stream" id="chat-box"></div>
+                <div class="chat__input">
+                    <div class="input-shell">
+                        <textarea id="user-input" rows="1" placeholder="最近気になっている症状や、整理したい気持ちがあれば教えてください。"></textarea>
                     </div>
-                    <button class="send-button" id="send-button">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    <button class="send-button" id="send-button" type="button">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                         送信
                     </button>
                 </div>
             </section>
-            <aside class="side-column">
-                <section class="panel evidence-panel">
+
+            <aside class="side-stack">
+                <section class="card panel">
                     <header>
                         <h3>Evidence Briefs</h3>
-                        <p>NEJMやJAMAなどの一次情報から、みみよりがカウンセリングに活かす重要ポイントを抜粋しています。</p>
+                        <p>一次情報から得た知見をみみより用に要約。会話の裏側で参照している内容を抜粋しています。</p>
                     </header>
-                    <div class="evidence-feed">
-                        <article class="evidence-item">
-                            <h4>気分障害の初期支援とフォローアップ</h4>
-                            <p>JAMA Psychiatry (2023) のレビューでは、患者自身が症状をモニタリングできるツールと、専門職による定期的なチェックインの併用が改善に寄与することが示されています。</p>
+                    <div class="evidence-list">
+                        <article class="evidence">
+                            <h4>抑うつ傾向のセルフモニタリング</h4>
+                            <p>JAMA Psychiatry (2023) のレビューでは、セルフチェックと専門家による遠隔フォローを組み合わせると改善が促進される可能性が指摘されています。</p>
                             <span>JAMA Psychiatry. 2023;80(9):901-910.</span>
                         </article>
-                        <article class="evidence-item">
-                            <h4>睡眠リズムの調整とメンタルヘルス</h4>
-                            <p>NEJM (2022) では、夜間のブルーライト制限と日中の軽い有酸素運動を組み合わせることで、不眠と不安のスコアが有意に低下した試験結果が報告されています。</p>
+                        <article class="evidence">
+                            <h4>睡眠リズム調整と不安軽減</h4>
+                            <p>NEJM (2022) はブルーライト制限と軽い有酸素運動を併用した介入で、不眠と不安スコアが有意に低下したことを報告しています。</p>
                             <span>New Engl J Med. 2022;386:1426-1438.</span>
                         </article>
-                        <article class="evidence-item">
-                            <h4>セルフケアと認知行動療法のハイブリッド活用</h4>
-                            <p>ランダム化比較試験のメタ分析によると、デジタル認知行動療法とセルフケア・ガイドの併用は、単独介入と比べて不安症状の改善が早期に得られる可能性があります。</p>
-                            <span>Lancet Digital Health. 2024;6(2):e75-e88.</span>
+                        <article class="evidence">
+                            <h4>デジタルCBTとセルフケアのハイブリッド</h4>
+                            <p>Lancet Digital Health (2024) のメタ分析では、デジタルCBTとセルフケアガイドの併用が、不安症状の改善スピードを高める可能性を示しました。</p>
+                            <span>Lancet Digit Health. 2024;6(2):e75-e88.</span>
                         </article>
                     </div>
                 </section>
-                <section class="panel assurance-panel">
+
+                <section class="card panel">
                     <header>
-                        <h3>Comfort & Safety</h3>
-                        <p>みみよりは相談料無料のまま。医療機関との連携を視野に入れつつ、安心できるカウンセリング体験を追求しています。</p>
+                        <h3>Comfort &amp; Safety</h3>
+                        <p>みみよりは相談料無料のまま、安心して話せる場所づくりを大切にしています。緊急時は専門機関の利用もご検討ください。</p>
                     </header>
-                    <div class="assurance-body">
-                        <div class="assurance-card">
-                            <h4>守秘とプライバシー</h4>
-                            <p>会話内容はあなたの気持ちを整理する目的に限って扱います。第三者に共有されることはありません。</p>
+                    <div class="assurance">
+                        <div class="assurance-item">
+                            <h4>プライバシーを尊重</h4>
+                            <p>会話内容はあなたの気持ちを整理する目的に限って活用され、第三者へ共有されることはありません。</p>
                         </div>
-                        <div class="assurance-card">
-                            <h4>緊急時のお願い</h4>
-                            <p>強い自傷念慮や急変がある場合は、ためらわず救急機関や専門医にご相談ください。みみよりは補助的なサポートです。</p>
+                        <div class="assurance-item">
+                            <h4>緊急対応について</h4>
+                            <p>強い希死念慮や急変を感じた場合は、救急機関や専門医へすぐご相談ください。みみよりは補完的なサポートです。</p>
                         </div>
-                        <div class="assurance-card">
+                        <div class="assurance-item">
                             <h4>今後のアップデート</h4>
-                            <p>専門家監修のセルフケアプランや医療機関との連携機能を準備中です。ご要望があればお知らせください。</p>
+                            <p>医療機関との連携サポートやセルフケアプランの提供を準備中です。ご要望があればいつでもお知らせください。</p>
                         </div>
                     </div>
                 </section>
             </aside>
-        </div>
-    </main>
-    <footer>
-        © 2024 Mimiyori. エビデンスで安心を支える寄り添い型カウンセリングAI。
-    </footer>
+        </main>
+
+        <footer>
+            © 2024 Mimiyori. 根拠と寄り添いで安心を届けるカウンセリングAI。
+        </footer>
+    </div>
 
     <script>
         const API_ENDPOINT = 'https://api.mimiyori.ai/v1/chat';
         const SELECTED_MODEL = 'mimiyori-gpt-pro';
 
-        const initialMessage = 'こんにちは。エビデンスとあなたの気持ちの両方を大切にしながら、今のお困りごとや気になっていることを一緒に整理していきましょう。';
+        const initialMessage = 'こんにちは。エビデンスとあなたの気持ちの両方を大切にしながら、今のお困りごとを一緒に整理していきましょう。';
 
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
@@ -749,9 +632,9 @@
 
         function setBadgeStatus(text, state = 'online') {
             connectionBadge.textContent = '';
+            connectionBadge.className = `status-badge ${state}`;
             const dot = document.createElement('span');
             dot.className = 'status-dot';
-            connectionBadge.className = `status-badge ${state}`;
             connectionBadge.append(dot, text);
         }
 
@@ -770,9 +653,9 @@
 
         function appendTypingIndicator() {
             const typing = document.createElement('div');
-            typing.className = 'typing-indicator';
             typing.id = 'typing-indicator';
-            typing.textContent = 'みみよりが考えています…';
+            typing.className = 'typing-indicator';
+            typing.textContent = 'みみよりがエビデンスを確認しています…';
             chatBox.appendChild(typing);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
@@ -792,7 +675,7 @@
             conversation.push({ role: 'user', content: input });
             appendTypingIndicator();
             disableControls(true);
-            setBadgeStatus('みみよりがエビデンスを確認しています', 'pending');
+            setBadgeStatus('みみよりが考えています', 'pending');
 
             try {
                 const response = await fetch(API_ENDPOINT, {
@@ -823,12 +706,12 @@
 
                 appendMessage('assistant', aiMessage);
                 conversation.push({ role: 'assistant', content: aiMessage });
-                setBadgeStatus('やりとりの準備ができています', 'online');
+                setBadgeStatus('接続準備が整いました', 'online');
                 speak(aiMessage);
             } catch (error) {
                 console.error(error);
-                setBadgeStatus('みみよりのサーバーに接続できませんでした', 'offline');
-                appendMessage('assistant', '接続中にエラーが発生しました。時間をおいて再度お試しになるか、サポートチームまでご連絡ください。');
+                setBadgeStatus('接続に問題が発生しました', 'offline');
+                appendMessage('assistant', '接続中にエラーが発生しました。時間を置いて再度お試しになるか、サポートまでご連絡ください。');
             } finally {
                 removeTypingIndicator();
                 disableControls(false);
