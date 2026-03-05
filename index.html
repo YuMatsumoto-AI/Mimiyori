@@ -2,546 +2,407 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-    <title>みみより | 東京市場ドル・円3ヵ月平均</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI生成文書 著作権料分配シミュレーター</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            color-scheme: light;
-            --bg-gradient: linear-gradient(135deg, #EAF8FF, #FDEFF0);
-            --panel-bg: rgba(255, 255, 255, 0.95);
-            --accent: #2F6FE4;
-            --accent-dark: #1F4FAA;
-            --border-color: rgba(0, 0, 0, 0.08);
+            --bg: linear-gradient(140deg, #eef6ff, #fff1f4);
+            --card: #ffffff;
+            --text: #2f2f33;
+            --sub: #606670;
+            --accent: #356df2;
+            --accent-dark: #214cb5;
+            --line: #e5e8ef;
+            --danger: #c0392b;
+            --ok: #1f8f4d;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
-            font-family: 'Noto Sans JP', sans-serif;
             margin: 0;
             min-height: 100vh;
-            background: var(--bg-gradient);
-            color: #333;
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--text);
+            background: var(--bg);
             display: flex;
             flex-direction: column;
         }
 
+        header, main, footer {
+            width: min(1100px, 100%);
+            margin: 0 auto;
+            padding-inline: 1rem;
+        }
+
         header {
-            padding: 2.5rem 1.5rem 1.5rem;
-            text-align: center;
+            padding-top: 2rem;
+            padding-bottom: 1rem;
         }
 
-        header h1 {
+        h1 {
             margin: 0;
-            font-size: clamp(1.6rem, 2vw + 1.2rem, 2.4rem);
-            font-weight: 700;
+            font-size: clamp(1.3rem, 2.5vw, 2rem);
         }
 
-        header p {
-            margin: 0.75rem auto 0;
-            max-width: 680px;
-            font-size: 0.95rem;
+        .lead {
+            color: var(--sub);
             line-height: 1.8;
-            color: #555;
+            margin-top: 0.8rem;
+            max-width: 900px;
+            font-size: 0.95rem;
         }
 
         main {
-            flex: 1;
-            width: min(960px, 100%);
-            margin: 0 auto;
-            padding: 0 1.5rem 3rem;
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .panel {
-            background: var(--panel-bg);
-            border-radius: 20px;
-            box-shadow: 0 20px 45px rgba(87, 103, 131, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            padding: clamp(1.5rem, 2vw + 1rem, 2.4rem);
-            display: grid;
-            gap: 1.2rem;
-        }
-
-        button.primary {
-            justify-self: center;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            border-radius: 999px;
-            padding: 0.75rem 2.4rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-        }
-
-        button.primary:hover:not(:disabled) {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(47, 111, 228, 0.28);
-            background: var(--accent-dark);
-        }
-
-        button.primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .fx-status {
-            margin: 0;
-            font-size: 0.95rem;
-            text-align: center;
-            color: #4A4A4A;
-            min-height: 1.5rem;
-        }
-
-        .fx-status.error {
-            color: #B22222;
-        }
-
-        .fx-results {
             display: grid;
             gap: 1rem;
+            padding-bottom: 1.8rem;
         }
 
-        .fx-results h2 {
-            margin: 0;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-align: center;
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: 0 14px 35px rgba(38, 68, 125, 0.09);
+            padding: 1rem;
         }
 
-        .fx-month-list {
-            margin: 0;
-            padding: 0;
-            list-style: none;
+        .grid {
             display: grid;
-            gap: 0.7rem;
+            gap: 0.8rem;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
         }
 
-        .fx-month-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.7rem 1rem;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.96);
-            border: 1px solid var(--border-color);
-            font-weight: 600;
-        }
-
-        .fx-month, .fx-value, .fx-average-value {
-            font-variant-numeric: tabular-nums;
-        }
-
-        .fx-average {
-            margin: 0;
-            font-size: 1rem;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .fx-note {
-            margin: 0;
-            font-size: 0.85rem;
-            color: #666;
-            text-align: center;
-        }
-
-        .notes {
-            padding: clamp(1.6rem, 2vw + 1rem, 2.3rem);
-            color: #444;
-        }
-
-        .notes h2 {
-            margin: 0 0 1rem;
-            font-size: 1.05rem;
-        }
-
-        .notes ul {
-            margin: 0;
-            padding-left: 1.2rem;
+        label {
             display: grid;
-            gap: 0.6rem;
+            gap: 0.35rem;
             font-size: 0.9rem;
+            color: var(--sub);
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid #cfd5e1;
+            border-radius: 10px;
+            padding: 0.65rem 0.75rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .row-head, .row {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr auto;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .row-head {
+            padding: 0.5rem 0.65rem;
+            color: var(--sub);
+            font-size: 0.8rem;
+            border-bottom: 1px solid var(--line);
+            margin-bottom: 0.4rem;
+        }
+
+        .rows {
+            display: grid;
+            gap: 0.55rem;
+        }
+
+        button {
+            border: none;
+            border-radius: 999px;
+            padding: 0.62rem 1rem;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover { background: var(--accent-dark); }
+
+        .ghost {
+            background: #eff3ff;
+            color: #2c4a90;
+        }
+
+        .ghost:hover { background: #dce6ff; }
+
+        .danger {
+            background: #fff0ef;
+            color: var(--danger);
+            padding: 0.45rem 0.8rem;
+        }
+
+        .danger:hover { background: #ffe3e0; }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+
+        #status {
+            min-height: 1.3rem;
+            margin: 0;
+            font-size: 0.88rem;
+            color: var(--sub);
+        }
+
+        #status.error { color: var(--danger); }
+        #status.ok { color: var(--ok); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.7rem;
+            font-size: 0.92rem;
+        }
+
+        th, td {
+            border-bottom: 1px solid var(--line);
+            padding: 0.55rem 0.45rem;
+            text-align: left;
+        }
+
+        td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+        .hint {
+            color: var(--sub);
+            font-size: 0.85rem;
             line-height: 1.6;
+            margin: 0;
         }
 
         footer {
-            padding: 1.8rem 1.5rem 2.8rem;
-            text-align: center;
-            color: #888;
-            font-size: 0.78rem;
-        }
-
-        @media (min-width: 720px) {
-            main {
-                grid-template-columns: 2fr 1fr;
-            }
+            font-size: 0.75rem;
+            color: #7f8895;
+            padding-bottom: 1.8rem;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>東京市場 ドル・円 スポット中心相場</h1>
-        <p>日本銀行の統計サイトから最新の月次データを取得し、直近3ヵ月の平均レートを小数第2位（第3位を四捨五入）で表示します。</p>
+        <h1>AI生成文書の著作権料分配シミュレーター</h1>
+        <p class="lead">AIで生成された文書に対して、参照・学習元の著作物（または権利者）ごとの寄与割合を入力し、全体の著作権料から支払額を自動算出します。合計割合が100%でない場合は正規化して再配分できます。</p>
     </header>
 
     <main>
-        <section class="panel">
-            <button id="fx-fetch-button" class="primary" type="button">直近3ヵ月平均を取得する</button>
-            <p id="fx-status" class="fx-status">ボタンを押してデータを取得してください。</p>
-            <div id="fx-results" class="fx-results" hidden>
-                <h2>直近の月次データ</h2>
-                <ul id="fx-month-list" class="fx-month-list"></ul>
-                <p class="fx-average">3ヵ月平均：<span id="fx-average-value" class="fx-average-value"></span></p>
-                <p id="fx-note" class="fx-note"></p>
+        <section class="card">
+            <h2>1) 基本条件</h2>
+            <div class="grid">
+                <label>
+                    文書タイトル
+                    <input id="doc-title" type="text" placeholder="例: 生成レポート2026-03" value="生成レポート サンプル">
+                </label>
+                <label>
+                    総著作権料 (円)
+                    <input id="total-fee" type="number" min="0" step="1" value="1000000">
+                </label>
             </div>
+            <p class="hint">※ 法的な帰属判断そのものは本ツールで確定できません。別途、法務判断・契約条件と併用してください。</p>
         </section>
 
-        <section class="panel notes">
-            <h2>使い方と注意事項</h2>
-            <ul>
-                <li>ページ中央のボタンを押すと、日本銀行の公開データにアクセスして自動で解析します。</li>
-                <li>通信状況や日本銀行サイトの構成変更によって取得に失敗する場合があります。その際は時間をあけて再度お試しください。</li>
-                <li>為替レートは速報値であり、確定値ではない可能性があります。参考値としてご利用ください。</li>
-            </ul>
+        <section class="card">
+            <h2>2) 権利者と寄与割合の入力</h2>
+            <div class="row-head">
+                <div>権利者 / 著作物名</div>
+                <div>寄与割合 (%)</div>
+                <div>操作</div>
+            </div>
+            <div id="rows" class="rows"></div>
+            <div class="actions">
+                <button id="add-row" class="ghost" type="button">＋ 行を追加</button>
+                <button id="compute" type="button">分配額を計算</button>
+                <button id="normalize" class="ghost" type="button">割合を100%に正規化</button>
+            </div>
+            <p id="status"></p>
+        </section>
+
+        <section class="card">
+            <h2>3) 算出結果</h2>
+            <div id="result-wrap" hidden>
+                <p id="summary" class="hint"></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>権利者 / 著作物</th>
+                            <th class="num">入力割合(%)</th>
+                            <th class="num">確定割合(%)</th>
+                            <th class="num">支払額(円)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result-body"></tbody>
+                </table>
+            </div>
+            <p id="empty-result" class="hint">まだ計算されていません。</p>
         </section>
     </main>
 
-    <footer>
-        データ出典：日本銀行統計データ検索サイト
-    </footer>
+    <footer>このツールは分配計算の補助を目的としたデモ実装です。</footer>
 
     <script type="module">
-        const TARGET_URL = 'https://www.stat-search.boj.or.jp/ssi/mtshtml/fm08_m_1.html';
-        const PROXIED_TARGET_URL = 'https://r.jina.ai/http://www.stat-search.boj.or.jp/ssi/mtshtml/fm08_m_1.html';
-        const TARGET_KEYWORDS = ['東京市場', 'ドル・円', 'スポット', '中心相場', '月中平均'];
+        const rowsEl = document.getElementById('rows');
+        const addRowButton = document.getElementById('add-row');
+        const computeButton = document.getElementById('compute');
+        const normalizeButton = document.getElementById('normalize');
+        const statusEl = document.getElementById('status');
+        const totalFeeEl = document.getElementById('total-fee');
+        const docTitleEl = document.getElementById('doc-title');
+        const resultWrapEl = document.getElementById('result-wrap');
+        const emptyResultEl = document.getElementById('empty-result');
+        const resultBodyEl = document.getElementById('result-body');
+        const summaryEl = document.getElementById('summary');
 
-        function normalizeCellText(raw) {
-            return raw
-                .replace(/\u00ad/g, '')
-                .replace(/[\u00a0\u3000]/g, ' ')
-                .replace(/[\r\t\f\v]/g, ' ')
-                .replace(/\s*\n\s*/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim();
+        function formatYen(value) {
+            return new Intl.NumberFormat('ja-JP', { maximumFractionDigits: 0 }).format(value);
         }
 
-        function parseSpan(value) {
-            const parsed = Number.parseInt(value ?? '1', 10);
-            return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
-        }
+        function createRow(name = '', ratio = '') {
+            const row = document.createElement('div');
+            row.className = 'row';
 
-        function expandTable(table) {
-            const matrix = [];
-            const rowSpans = [];
-            const rows = Array.from(table.querySelectorAll('tr'));
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.placeholder = '例: 作家A / 小説X';
+            nameInput.value = name;
+            nameInput.className = 'name';
 
-            for (const row of rows) {
-                const cells = Array.from(row.children).filter((cell) => cell instanceof HTMLTableCellElement);
-                const rowValues = [];
-                let colIndex = 0;
+            const ratioInput = document.createElement('input');
+            ratioInput.type = 'number';
+            ratioInput.min = '0';
+            ratioInput.step = '0.01';
+            ratioInput.placeholder = '例: 25';
+            ratioInput.value = ratio;
+            ratioInput.className = 'ratio';
 
-                const consumeRowSpans = () => {
-                    while (rowSpans[colIndex]) {
-                        const span = rowSpans[colIndex];
-                        rowValues.push(span.text);
-                        if (span.remaining > 1) {
-                            rowSpans[colIndex] = { text: span.text, remaining: span.remaining - 1 };
-                        } else {
-                            rowSpans[colIndex] = null;
-                        }
-                        colIndex += 1;
-                    }
-                };
-
-                consumeRowSpans();
-
-                for (const cell of cells) {
-                    consumeRowSpans();
-
-                    const text = normalizeCellText(cell.textContent ?? '');
-                    const colspan = parseSpan(cell.getAttribute('colspan'));
-                    const rowspan = parseSpan(cell.getAttribute('rowspan'));
-
-                    if (colIndex + colspan > rowSpans.length) {
-                        rowSpans.length = colIndex + colspan;
-                    }
-
-                    for (let offset = 0; offset < colspan; offset += 1) {
-                        rowValues.push(text);
-                        if (rowspan > 1) {
-                            rowSpans[colIndex + offset] = { text, remaining: rowspan - 1 };
-                        } else if (!rowSpans[colIndex + offset]) {
-                            rowSpans[colIndex + offset] = null;
-                        }
-                    }
-
-                    colIndex += colspan;
-                }
-
-                while (colIndex < rowSpans.length) {
-                    const span = rowSpans[colIndex];
-                    if (span) {
-                        rowValues.push(span.text);
-                        if (span.remaining > 1) {
-                            rowSpans[colIndex] = { text: span.text, remaining: span.remaining - 1 };
-                        } else {
-                            rowSpans[colIndex] = null;
-                        }
-                    }
-                    colIndex += 1;
-                }
-
-                matrix.push(rowValues);
-            }
-
-            return matrix;
-        }
-
-        function deriveColumnHeaders(matrix) {
-            const yearPattern = /\d{4}/;
-            let dataStart = -1;
-            for (let index = 0; index < matrix.length; index += 1) {
-                const row = matrix[index];
-                if (!row || row.length === 0) {
-                    continue;
-                }
-                if (yearPattern.test(row[0])) {
-                    dataStart = index;
-                    break;
-                }
-            }
-
-            if (dataStart === -1) {
-                throw new Error('データの先頭行を特定できませんでした。');
-            }
-
-            const headerRows = matrix.slice(0, dataStart);
-            const numCols = matrix.reduce((max, row) => Math.max(max, row.length), 0);
-            const headers = [];
-
-            for (let col = 0; col < numCols; col += 1) {
-                const parts = [];
-                for (const headerRow of headerRows) {
-                    if (col >= headerRow.length) {
-                        continue;
-                    }
-                    const cellText = headerRow[col].trim();
-                    if (cellText && !parts.includes(cellText)) {
-                        parts.push(cellText);
-                    }
-                }
-                headers.push(parts.join(' '));
-            }
-
-            return { headers, dataStart };
-        }
-
-        function parseYear(text) {
-            const match = text.match(/(\d{4})/);
-            return match ? Number.parseInt(match[1], 10) : null;
-        }
-
-        function parseMonth(text) {
-            const match = text.match(/(\d{1,2})/);
-            if (!match) {
-                return null;
-            }
-            const value = Number.parseInt(match[1], 10);
-            if (value >= 1 && value <= 12) {
-                return value;
-            }
-            return null;
-        }
-
-        function parseValue(text) {
-            const cleaned = text
-                .replace(/[▲△−－―]/g, '-')
-                .replace(/…/g, '')
-                .replace(/,/g, '')
-                .trim();
-
-            if (!cleaned) {
-                return null;
-            }
-
-            const match = cleaned.match(/-?\d+(?:\.\d+)?/);
-            if (!match) {
-                return null;
-            }
-
-            const number = Number.parseFloat(match[0]);
-            return Number.isFinite(number) ? number : null;
-        }
-
-        function extractSeries(matrix) {
-            const { headers, dataStart } = deriveColumnHeaders(matrix);
-            const targetIndex = headers.findIndex((header) => TARGET_KEYWORDS.every((keyword) => header.includes(keyword)));
-            if (targetIndex === -1) {
-                return [];
-            }
-
-            const records = [];
-            for (const row of matrix.slice(dataStart)) {
-                if (row.length <= Math.max(targetIndex, 1)) {
-                    continue;
-                }
-                const year = parseYear(row[0] ?? '');
-                const month = parseMonth(row[1] ?? '');
-                if (!year || !month) {
-                    continue;
-                }
-                const value = parseValue(row[targetIndex] ?? '');
-                if (value == null) {
-                    continue;
-                }
-                records.push({ year, month, value });
-            }
-
-            records.sort((a, b) => (a.year - b.year) || (a.month - b.month));
-            return records;
-        }
-
-        function parseTokyoFxSeries(html) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const tables = Array.from(doc.querySelectorAll('table'));
-
-            for (const table of tables) {
-                const matrix = expandTable(table);
-                if (!matrix.length) {
-                    continue;
-                }
-                try {
-                    const series = extractSeries(matrix);
-                    if (series.length) {
-                        return series;
-                    }
-                } catch (error) {
-                    console.warn('表の解析に失敗しました。別の表を確認します。', error);
-                }
-            }
-
-            throw new Error('目的の為替レートを見つけられませんでした。');
-        }
-
-        async function fetchTokyoFxHtml() {
-            const fetchOptions = {
-                headers: {
-                    'Accept': 'text/html,application/xhtml+xml',
-                },
-                mode: 'cors',
-            };
-
-            try {
-                const response = await fetch(TARGET_URL, fetchOptions);
-                if (!response.ok) {
-                    throw new Error(`データの取得に失敗しました（${response.status}）`);
-                }
-                return await response.text();
-            } catch (originalError) {
-                try {
-                    const response = await fetch(PROXIED_TARGET_URL, fetchOptions);
-                    if (!response.ok) {
-                        throw new Error(`データの取得に失敗しました（${response.status}）`);
-                    }
-                    return await response.text();
-                } catch (proxyError) {
-                    throw originalError;
-                }
-            }
-        }
-
-        function computeAverage(records, months = 3) {
-            if (months <= 0) {
-                throw new Error('月数は1以上を指定してください。');
-            }
-            if (records.length < months) {
-                throw new Error('平均を計算するのに十分なデータがありません。');
-            }
-
-            const recent = records.slice(-months);
-            const sum = recent.reduce((total, record) => total + record.value, 0);
-            const average = Math.round((sum / months) * 100) / 100;
-
-            return { recent, average };
-        }
-
-        function formatMonth(record) {
-            return `${record.year}/${String(record.month).padStart(2, '0')}`;
-        }
-
-        function isFetchError(error) {
-            return error instanceof TypeError && /fetch/i.test(error.message);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const button = document.getElementById('fx-fetch-button');
-            const status = document.getElementById('fx-status');
-            const results = document.getElementById('fx-results');
-            const list = document.getElementById('fx-month-list');
-            const averageValue = document.getElementById('fx-average-value');
-            const note = document.getElementById('fx-note');
-
-            if (!button || !status || !results || !list || !averageValue || !note) {
-                return;
-            }
-
-            button.addEventListener('click', async () => {
-                status.classList.remove('error');
-                status.textContent = '最新データを取得しています…';
-                results.hidden = true;
-                list.innerHTML = '';
-                averageValue.textContent = '';
-                note.textContent = '';
-                button.disabled = true;
-
-                try {
-                    const html = await fetchTokyoFxHtml();
-                    const series = parseTokyoFxSeries(html);
-                    const { recent, average } = computeAverage(series, 3);
-                    const latest = recent[recent.length - 1];
-
-                    const displayEntries = [...recent].reverse();
-                    for (const entry of displayEntries) {
-                        const item = document.createElement('li');
-                        const month = document.createElement('span');
-                        month.className = 'fx-month';
-                        month.textContent = formatMonth(entry);
-                        const value = document.createElement('span');
-                        value.className = 'fx-value';
-                        value.textContent = entry.value.toFixed(2);
-                        item.append(month, value);
-                        list.appendChild(item);
-                    }
-
-                    averageValue.textContent = average.toFixed(2);
-                    note.textContent = `${formatMonth(recent[0])}〜${formatMonth(latest)} の平均です。小数第2位まで（第3位を四捨五入）。`;
-                    status.textContent = `${formatMonth(latest)} 時点のデータを取得しました。`;
-                    results.hidden = false;
-                } catch (error) {
-                    console.error(error);
-                    status.classList.add('error');
-                    if (isFetchError(error)) {
-                        status.textContent = 'データの取得に失敗しました。ネットワーク環境やブラウザのCORS制限をご確認のうえ、時間をおいて再度お試しください。';
-                    } else if (error instanceof Error) {
-                        status.textContent = error.message;
-                    } else {
-                        status.textContent = '予期しないエラーが発生しました。';
-                    }
-                } finally {
-                    button.disabled = false;
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.textContent = '削除';
+            deleteButton.className = 'danger';
+            deleteButton.addEventListener('click', () => {
+                row.remove();
+                if (!rowsEl.children.length) {
+                    addSeedRows();
                 }
             });
+
+            row.append(nameInput, ratioInput, deleteButton);
+            rowsEl.appendChild(row);
+        }
+
+        function addSeedRows() {
+            createRow('作家A / 原稿A', '45');
+            createRow('作家B / 論文B', '35');
+            createRow('出版社C / 記事群', '20');
+        }
+
+        function readRows() {
+            return Array.from(rowsEl.querySelectorAll('.row')).map((row) => {
+                const name = row.querySelector('.name')?.value.trim() ?? '';
+                const ratioRaw = row.querySelector('.ratio')?.value ?? '';
+                const ratio = Number.parseFloat(ratioRaw);
+                return {
+                    name,
+                    inputRatio: Number.isFinite(ratio) ? ratio : NaN,
+                };
+            });
+        }
+
+        function setStatus(message, type = '') {
+            statusEl.textContent = message;
+            statusEl.className = type;
+        }
+
+        function validateInputs(items, totalFee) {
+            if (!Number.isFinite(totalFee) || totalFee < 0) {
+                throw new Error('総著作権料は0以上の数値で入力してください。');
+            }
+            if (!items.length) {
+                throw new Error('少なくとも1件の権利者情報を入力してください。');
+            }
+            for (const item of items) {
+                if (!item.name) {
+                    throw new Error('権利者 / 著作物名が空欄の行があります。');
+                }
+                if (!Number.isFinite(item.inputRatio) || item.inputRatio < 0) {
+                    throw new Error('寄与割合は0以上の数値で入力してください。');
+                }
+            }
+            const ratioSum = items.reduce((sum, item) => sum + item.inputRatio, 0);
+            if (ratioSum <= 0) {
+                throw new Error('寄与割合の合計は0より大きくしてください。');
+            }
+            return ratioSum;
+        }
+
+        function computeDistribution(items, totalFee) {
+            const ratioSum = validateInputs(items, totalFee);
+            return {
+                ratioSum,
+                rows: items.map((item) => {
+                    const normalizedRatio = (item.inputRatio / ratioSum) * 100;
+                    const fee = Math.round((normalizedRatio / 100) * totalFee);
+                    return {
+                        ...item,
+                        normalizedRatio,
+                        fee,
+                    };
+                }),
+            };
+        }
+
+        function renderResult(title, totalFee, distribution) {
+            resultBodyEl.innerHTML = '';
+            distribution.rows.forEach((row) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.name}</td>
+                    <td class="num">${row.inputRatio.toFixed(2)}</td>
+                    <td class="num">${row.normalizedRatio.toFixed(2)}</td>
+                    <td class="num">${formatYen(row.fee)}</td>
+                `;
+                resultBodyEl.appendChild(tr);
+            });
+
+            summaryEl.textContent = `文書「${title || '（無題）'}」の総著作権料 ${formatYen(totalFee)} 円を、合計割合 ${distribution.ratioSum.toFixed(2)}% を基準に按分しました。`;
+            emptyResultEl.hidden = true;
+            resultWrapEl.hidden = false;
+        }
+
+        addRowButton.addEventListener('click', () => createRow());
+
+        computeButton.addEventListener('click', () => {
+            try {
+                const title = docTitleEl.value.trim();
+                const totalFee = Number.parseFloat(totalFeeEl.value);
+                const items = readRows();
+                const distribution = computeDistribution(items, totalFee);
+                renderResult(title, totalFee, distribution);
+                setStatus('計算が完了しました。', 'ok');
+            } catch (error) {
+                setStatus(error instanceof Error ? error.message : '計算中にエラーが発生しました。', 'error');
+            }
         });
+
+        normalizeButton.addEventListener('click', () => {
+            try {
+                const totalFee = Number.parseFloat(totalFeeEl.value);
+                const items = readRows();
+                const distribution = computeDistribution(items, totalFee);
+                const ratios = rowsEl.querySelectorAll('.ratio');
+                distribution.rows.forEach((row, index) => {
+                    ratios[index].value = row.normalizedRatio.toFixed(2);
+                });
+                setStatus('割合を100%基準に正規化しました。', 'ok');
+            } catch (error) {
+                setStatus(error instanceof Error ? error.message : '正規化中にエラーが発生しました。', 'error');
+            }
+        });
+
+        addSeedRows();
     </script>
 </body>
 </html>
